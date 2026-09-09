@@ -638,6 +638,22 @@ export default function CostEstimator({ onExportToContact }) {
             grid-template-columns: 1fr;
           }
         }
+
+        @media (max-width: 640px) {
+          .estimator-controls, .summary-card {
+            padding: 20px 16px;
+          }
+          .timeline-options-grid {
+            grid-template-columns: 1fr;
+          }
+          .summary-price-box {
+            padding: 16px;
+          }
+          .summary-price-value {
+            font-size: 1.35rem;
+            word-break: break-word;
+          }
+        }
       `}</style>
     </section>
   );

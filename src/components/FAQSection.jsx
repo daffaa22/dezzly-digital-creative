@@ -181,6 +181,25 @@ export default function FAQSection() {
           color: var(--text-secondary);
           line-height: 1.7;
         }
+
+        @media (max-width: 640px) {
+          .faq-cat-btn {
+            padding: 8px 16px;
+            font-size: 0.82rem;
+          }
+          .faq-question-row {
+            padding: 16px 18px;
+          }
+          .faq-question-text {
+            font-size: 0.95rem;
+          }
+          .faq-answer-body {
+            padding: 0 18px 18px 18px;
+          }
+          .faq-answer-text {
+            font-size: 0.88rem;
+          }
+        }
       `}</style>
     </section>
   );

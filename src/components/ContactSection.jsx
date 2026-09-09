@@ -572,6 +572,22 @@ export default function ContactSection({ prefillData }) {
             grid-template-columns: repeat(2, 1fr);
           }
         }
+
+        @media (max-width: 640px) {
+          .contact-form-col, .direct-contact-card {
+            padding: 22px 16px;
+          }
+          .service-pill-btn {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+          }
+        }
+
+        @media (max-width: 420px) {
+          .budget-pills-row {
+            grid-template-columns: 1fr;
+          }
+        }
       `}</style>
     </section>
   );

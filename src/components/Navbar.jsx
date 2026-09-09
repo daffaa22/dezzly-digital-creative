@@ -290,6 +290,26 @@ export default function Navbar({ onOpenCMS }) {
             display: flex;
           }
         }
+
+        @media (max-width: 768px) {
+          .cms-trigger-btn {
+            display: none;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .navbar-actions .btn-primary {
+            padding: 7px 12px;
+            font-size: 0.8rem;
+          }
+          .brand-logo-icon {
+            width: 34px;
+            height: 34px;
+          }
+          .brand-name {
+            font-size: 1.1rem;
+          }
+        }
       `}</style>
     </header>
   );
