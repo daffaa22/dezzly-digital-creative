@@ -563,6 +563,30 @@ export default function CaseStudyModal({ project, onClose, onConsultSimilar }) {
             align-items: stretch;
           }
         }
+
+        @media (max-width: 480px) {
+          .modal-hero {
+            height: 200px;
+          }
+          .modal-hero-title {
+            font-size: 1.2rem;
+          }
+          .modal-hero-content {
+            left: 14px;
+            right: 14px;
+            bottom: 14px;
+          }
+          .modal-body-content {
+            padding: 14px;
+            gap: 16px;
+          }
+          .modal-section-card, .deep-box {
+            padding: 16px;
+          }
+          .modal-metric-num {
+            font-size: 1.6rem;
+          }
+        }
       `}</style>
     </div>
   );

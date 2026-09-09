@@ -223,14 +223,49 @@ export default function Hero() {
         }
 
         @media (max-width: 580px) {
-          .hero-stats-grid {
-            grid-template-columns: 1fr;
-          }
           .hero-cta-group {
             width: 100%;
           }
           .hero-cta-group .btn {
             width: 100%;
+          }
+          .hero-stats-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+          }
+          .hero-stat-card {
+            padding: 16px 12px;
+          }
+          .stat-number {
+            font-size: 1.8rem;
+          }
+          .stat-label {
+            font-size: 0.85rem;
+          }
+          .stat-sub {
+            font-size: 0.72rem;
+          }
+        }
+
+        @media (max-width: 420px) {
+          .hero-badge {
+            flex-direction: column;
+            gap: 4px;
+            padding: 10px 16px;
+            font-size: 0.8rem;
+          }
+          .hero-badge-divider {
+            display: none;
+          }
+          .hero-title {
+            font-size: 1.9rem;
+          }
+          .hero-trust-row {
+            gap: 12px;
+            flex-direction: column;
+          }
+          .hero-stats-grid {
+            grid-template-columns: 1fr;
           }
         }
       `}</style>

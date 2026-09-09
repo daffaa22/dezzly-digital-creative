@@ -513,14 +513,42 @@ export default function Portfolio({ onSelectProject }) {
         @media (max-width: 720px) {
           .projects-grid {
             grid-template-columns: 1fr;
+            gap: 20px;
           }
           .portfolio-controls {
             flex-direction: column;
             align-items: stretch;
+            gap: 14px;
+          }
+          .category-tabs {
+            overflow-x: auto;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            padding-bottom: 6px;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+          }
+          .category-tabs::-webkit-scrollbar {
+            display: none;
+          }
+          .category-tab-btn {
+            flex-shrink: 0;
+            padding: 8px 14px;
+            font-size: 0.82rem;
           }
           .search-box-wrap {
             width: 100%;
             min-width: unset;
+          }
+          .project-cover-wrap {
+            height: 190px;
+          }
+          .project-body {
+            padding: 18px;
+          }
+          .project-card-title {
+            font-size: 1.15rem;
           }
         }
       `}</style>

@@ -1665,6 +1665,31 @@ export default function AdminModal({ isOpen, onClose }) {
           .admin-dashboard-layout {
             grid-template-columns: 1fr;
           }
+          .admin-sidebar {
+            border-right: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 16px;
+          }
+          .admin-nav-list {
+            flex-direction: row;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding-bottom: 6px;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+          }
+          .admin-nav-list::-webkit-scrollbar {
+            display: none;
+          }
+          .admin-nav-item {
+            flex-shrink: 0;
+            padding: 8px 12px;
+            font-size: 0.82rem;
+          }
+          .admin-main-panel {
+            padding: 18px;
+            max-height: unset;
+          }
           .admin-stats-row, 
           .inquiry-meta-grid, 
           .services-admin-grid, 

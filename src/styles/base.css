@@ -9,6 +9,7 @@
 html {
   scroll-behavior: smooth;
   color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -21,6 +22,7 @@ body {
   overflow-x: hidden;
   position: relative;
   min-height: 100vh;
+  width: 100%;
 }
 
 /* Background Ambient Lighting Blobs */
@@ -29,8 +31,8 @@ body::before {
   position: fixed;
   top: -150px;
   left: 10%;
-  width: 550px;
-  height: 550px;
+  width: clamp(280px, 40vw, 550px);
+  height: clamp(280px, 40vw, 550px);
   background: radial-gradient(circle, rgba(0, 240, 255, 0.12) 0%, rgba(0,0,0,0) 70%);
   filter: blur(80px);
   z-index: -1;
@@ -43,8 +45,8 @@ body::after {
   position: fixed;
   bottom: 10%;
   right: 5%;
-  width: 650px;
-  height: 650px;
+  width: clamp(300px, 45vw, 650px);
+  height: clamp(300px, 45vw, 650px);
   background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, rgba(0,0,0,0) 70%);
   filter: blur(90px);
   z-index: -1;
@@ -54,7 +56,8 @@ body::after {
 
 /* Modern Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -76,7 +79,9 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   letter-spacing: -0.025em;
   color: var(--text-primary);
-  line-height: 1.2;
+  line-height: 1.25;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 a {
@@ -110,13 +115,7 @@ img {
   padding-top: 100px;
   padding-bottom: 100px;
   position: relative;
-}
-
-@media (max-width: 768px) {
-  .section {
-    padding-top: 60px;
-    padding-bottom: 60px;
-  }
+  overflow: hidden;
 }
 
 .section-header {
@@ -142,9 +141,10 @@ img {
 }
 
 .section-title {
-  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-size: clamp(1.8rem, 4vw, 3.2rem);
   font-weight: 700;
   margin-bottom: 18px;
+  line-height: 1.2;
 }
 
 .section-title span.gradient {
@@ -154,7 +154,37 @@ img {
 }
 
 .section-description {
-  font-size: 1.1rem;
+  font-size: clamp(0.95rem, 1.5vw, 1.1rem);
   color: var(--text-secondary);
   line-height: 1.7;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+  .section {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+  .section-header {
+    margin-bottom: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+  .section {
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+  .section-tag {
+    font-size: 0.78rem;
+    padding: 5px 12px;
+  }
 }
