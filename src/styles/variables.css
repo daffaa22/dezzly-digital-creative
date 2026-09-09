@@ -1,0 +1,62 @@
+:root {
+  /* Color Palette - Premium Dark Glassmorphism */
+  --bg-primary: #080B11;
+  --bg-secondary: #0D131F;
+  --bg-card: rgba(18, 24, 38, 0.7);
+  --bg-card-hover: rgba(28, 36, 56, 0.85);
+  --bg-glass: rgba(13, 19, 31, 0.65);
+  --bg-glass-heavy: rgba(8, 11, 17, 0.85);
+  --bg-input: rgba(20, 28, 44, 0.75);
+
+  /* Vibrant Accent Colors */
+  --accent-cyan: #00F0FF;
+  --accent-cyan-glow: rgba(0, 240, 255, 0.25);
+  --accent-cyan-subtle: rgba(0, 240, 255, 0.1);
+  --accent-violet: #8B5CF6;
+  --accent-violet-glow: rgba(139, 92, 246, 0.25);
+  --accent-amber: #F59E0B;
+  --accent-emerald: #10B981;
+  --accent-rose: #F43F5E;
+
+  /* Gradients */
+  --gradient-brand: linear-gradient(135deg, #00F0FF 0%, #8B5CF6 50%, #EC4899 100%);
+  --gradient-glow: linear-gradient(135deg, rgba(0, 240, 255, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%);
+  --gradient-card: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+  --gradient-border: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(0, 240, 255, 0.3) 50%, rgba(139, 92, 246, 0.15) 100%);
+
+  /* Typography Colors */
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  --text-accent: #00F0FF;
+
+  /* Borders & Dividers */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-highlight: rgba(0, 240, 255, 0.3);
+  --border-focus: #00F0FF;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.6);
+  --shadow-cyan-glow: 0 0 30px rgba(0, 240, 255, 0.25);
+  --shadow-violet-glow: 0 0 30px rgba(139, 92, 246, 0.25);
+
+  /* Layout & Spacing */
+  --max-width: 1280px;
+  --header-height: 80px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast: 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-normal: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Fonts */
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Space Grotesk', sans-serif;
+}
