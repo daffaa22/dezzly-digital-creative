@@ -1,0 +1,60 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
+
+@theme {
+    --font-sans: 'Plus Jakarta Sans', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+    --color-obsidian-950: #07090e;
+    --color-obsidian-900: #0b0f17;
+    --color-obsidian-800: #121824;
+    --color-obsidian-700: #1a2332;
+    --color-brand-cyan: #00f2fe;
+    --color-brand-electric: #4facfe;
+    --color-brand-violet: #8a2be2;
+    --color-brand-emerald: #10b981;
+    --color-brand-amber: #f59e0b;
+}
+
+html {
+    scroll-behavior: smooth;
+    background-color: #07090e;
+    color: #f1f5f9;
+}
+
+::selection {
+    background-color: #4facfe;
+    color: #07090e;
+}
+
+/* Custom Glassmorphism */
+.glass-panel {
+    background: rgba(18, 24, 36, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-panel-glow {
+    background: rgba(18, 24, 36, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(79, 172, 254, 0.25);
+    box-shadow: 0 0 35px -10px rgba(79, 172, 254, 0.15);
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #07090e;
+}
+::-webkit-scrollbar-thumb {
+    background: #1f293d;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #334155;
+}
