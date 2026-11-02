@@ -47,3 +47,4 @@ COPY docker/supervisord.conf /etc/supervisord.conf
 EXPOSE 8000
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+

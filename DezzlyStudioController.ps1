@@ -252,11 +252,25 @@ function Update-ServerStatus([bool]$isRunning) {
     }
 }
 
-# 1. Docker Compose Up
+# 1. Docker Compose Up (with Friendly Smart Fallback)
 $btnDockerUp.Add_Click({
     if (-not (Get-Command "docker" -ErrorAction SilentlyContinue)) {
-        Write-GuiLog "Docker Desktop belum terdeteksi. Silakan jalankan Docker Desktop terlebih dahulu, atau gunakan tombol [Start Local Server]." "WARNING"
-        [System.Windows.MessageBox]::Show("Docker belum aktif di PATH sistem Windows.`n`nAnda bisa menjalankan Docker Desktop, atau langsung klik tombol '[>] Start Local Server' untuk menjalankan server secara instan tanpa Docker.", "Informasi Docker", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Information) | Out-Null
+        Write-GuiLog "Docker Desktop belum terdeteksi di Windows." "WARNING"
+        $ans = [System.Windows.MessageBox]::Show(
+            "Docker Desktop belum terpasang di sistem Windows Anda.`n`nApakah Anda ingin langsung menyalakan website menggunakan Local Server (PHP 8.4) sekarang secara otomatis?", 
+            "Docker Belum Terpasang", 
+            [System.Windows.MessageBoxButton]::YesNo, 
+            [System.Windows.MessageBoxImage]::Question
+        )
+
+        if ($ans -eq [System.Windows.MessageBoxResult]::Yes) {
+            Write-GuiLog "Memulai server lokal Laravel (PHP 8.4) di port 8000..." "SERVER"
+            Start-Process php -ArgumentList "artisan serve --port=8000" -WorkingDirectory $projectRoot -WindowStyle Hidden
+            Start-Sleep -Seconds 1
+            Update-ServerStatus $true
+            Write-GuiLog "Server lokal aktif di http://127.0.0.1:8000" "SUCCESS"
+            Start-Process "http://localhost:8000"
+        }
         return
     }
 
