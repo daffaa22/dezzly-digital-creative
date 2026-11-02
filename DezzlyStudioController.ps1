@@ -383,11 +383,14 @@ $btnGitStatus.Add_Click({
 # 13. Quick Deploy
 $btnQuickDeploy.Add_Click({
     $commitMsg = "update: " + (Get-Date -Format "yyyy-MM-dd HH:mm") + " - Dezzly Studio Platform"
-    Write-GuiLog "Menyimpan seluruh perubahan ke Git dengan pesan: '$commitMsg'..." "GIT"
+    Write-GuiLog "Menyimpan perubahan ke Git ('$commitMsg')..." "GIT"
     git add .
-    $out = git commit -m "$commitMsg" 2>&1
-    Write-GuiLog ($out -join "`r`n") "GIT"
-    Write-GuiLog "Commit berhasil disimpan ke repositori lokal!" "SUCCESS"
+    $commitOut = git commit -m "$commitMsg" 2>&1
+    Write-GuiLog ($commitOut -join "`r`n") "GIT"
+    Write-GuiLog "Mendorong (push) perubahan ke GitHub (origin/main)..." "DEPLOY"
+    $pushOut = git push origin main 2>&1
+    Write-GuiLog ($pushOut -join "`r`n") "DEPLOY"
+    Write-GuiLog "Berhasil deploy & sync ke GitHub: daffaa22/dezzly-digital-creative!" "SUCCESS"
 })
 
 # Initial check for port 8000
