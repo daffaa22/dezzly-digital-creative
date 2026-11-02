@@ -1,5 +1,6 @@
 ﻿# ==============================================================================
-# DEZZLY CREATIVE - STUDIO & DEPLOYMENT CONTROLLER (POWERSHELL WPF GUI)
+# DEZZLY CREATIVE - PANEL KENDALI SERVER & DEPLOYMENT
+# Versi bersih tanpa emoji - kompatibel dengan semua versi Windows
 # ==============================================================================
 Add-Type -AssemblyName PresentationFramework
 Add-Type -AssemblyName PresentationCore
@@ -9,195 +10,344 @@ Add-Type -AssemblyName System.Windows.Forms
 $projectRoot = Split-Path -Parent $MyInvocation.MyCommand.Definition
 Set-Location $projectRoot
 
-[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+# Detect real LAN IP (Wi-Fi or Ethernet, not WSL/loopback)
+$lanIp = (Get-NetIPAddress -AddressFamily IPv4 |
+    Where-Object { $_.InterfaceAlias -match 'Wi-Fi|Ethernet|wlan' -and
+                   $_.IPAddress -notmatch '^169' -and
+                   $_.IPAddress -notmatch '^127' } |
+    Select-Object -First 1).IPAddress
+
+if (-not $lanIp) { $lanIp = "localhost" }
+
+$baseUrl  = "http://${lanIp}:8000"
+$adminUrl = "http://${lanIp}:8000/admin"
 
 $xaml = @"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="DEZZLY CREATIVE - Studio &amp; Deploy Controller" 
-        Height="760" Width="1020" 
-        MinHeight="680" MinWidth="900"
+        Title="DEZZLY CREATIVE - Panel Kendali Server &amp; Website"
+        Height="860" Width="1080"
+        MinHeight="740" MinWidth="960"
         WindowStartupLocation="CenterScreen"
-        Background="#07090E" Foreground="#F1F5F9"
-        FontFamily="Segoe UI, Tahoma, Helvetica, Arial">
+        Background="#F1F5F9" Foreground="#0F172A"
+        FontFamily="Segoe UI">
     <Window.Resources>
-        <!-- Button Standard Style -->
+
+        <!-- Base button style - no emoji, plain bold text -->
         <Style TargetType="Button">
-            <Setter Property="Background" Value="#121824"/>
-            <Setter Property="Foreground" Value="#F1F5F9"/>
-            <Setter Property="BorderBrush" Value="#1F293D"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="12,9"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="Foreground" Value="#0F172A"/>
+            <Setter Property="BorderBrush" Value="#CBD5E1"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" 
-                                BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="{TemplateBinding BorderThickness}" 
-                                CornerRadius="8">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Margin="{TemplateBinding Padding}"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
+
     </Window.Resources>
 
     <Grid Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/> <!-- Header -->
-            <RowDefinition Height="Auto"/> <!-- Server Control Row -->
-            <RowDefinition Height="Auto"/> <!-- Action Tools Grid -->
-            <RowDefinition Height="*"/>    <!-- Live Console Output -->
-            <RowDefinition Height="Auto"/> <!-- Footer Status -->
+            <RowDefinition Height="Auto"/>  <!-- Header -->
+            <RowDefinition Height="Auto"/>  <!-- LAN Info Bar -->
+            <RowDefinition Height="Auto"/>  <!-- Server Buttons -->
+            <RowDefinition Height="Auto"/>  <!-- Tool Buttons -->
+            <RowDefinition Height="*"/>     <!-- Log Box -->
+            <RowDefinition Height="Auto"/>  <!-- Footer -->
         </Grid.RowDefinitions>
 
-        <!-- 1. HEADER SECTION -->
-        <Border Grid.Row="0" Background="#0B0F17" BorderBrush="#1A2332" BorderThickness="1" CornerRadius="12" Padding="20,14" Margin="0,0,0,14">
+        <!-- =========================================================
+             ROW 0 : HEADER
+        ========================================================= -->
+        <Border Grid.Row="0"
+                Background="#FFFFFF"
+                BorderBrush="#CBD5E1"
+                BorderThickness="2"
+                CornerRadius="14"
+                Padding="20,16"
+                Margin="0,0,0,14">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
+                <!-- Branding -->
                 <StackPanel Grid.Column="0">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <Border Width="30" Height="30" Background="#00F2FE" CornerRadius="7" Margin="0,0,10,0">
-                            <TextBlock Text="D" Foreground="#07090E" FontWeight="ExtraBold" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Border Width="42" Height="42" Background="#0284C7" CornerRadius="10" Margin="0,0,14,0">
+                            <TextBlock Text="D" Foreground="#FFFFFF" FontWeight="ExtraBold"
+                                       FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
-                        <TextBlock Text="DEZZLY CREATIVE" Foreground="#FFFFFF" FontWeight="ExtraBold" FontSize="20" VerticalAlignment="Center"/>
-                        <Border Background="#121824" BorderBrush="#00F2FE" BorderThickness="1" CornerRadius="5" Padding="7,2" Margin="12,0,0,0">
-                            <TextBlock Text="DOCKER &amp; STUDIO CONTROLLER" Foreground="#00F2FE" FontSize="10" FontWeight="Bold"/>
-                        </Border>
+                        <StackPanel>
+                            <TextBlock Text="DEZZLY CREATIVE" Foreground="#0F172A"
+                                       FontWeight="ExtraBold" FontSize="24"/>
+                            <TextBlock Text="Panel Kontrol Server dan Deployment"
+                                       Foreground="#0369A1" FontWeight="SemiBold" FontSize="13"/>
+                        </StackPanel>
                     </StackPanel>
-                    <TextBlock Text="Pusat Kendali Full-Stack: Kontainer Docker, Local Server, Database, dan Deployment" Foreground="#94A3B8" FontSize="11" Margin="40,3,0,0"/>
+                    <TextBlock Text="Pusat kendali mudah untuk menyalakan, mengelola database, dan mengunggah file studio."
+                               Foreground="#475569" FontSize="12.5" Margin="56,5,0,0"/>
                 </StackPanel>
 
-                <!-- Live Status Badges -->
+                <!-- Status Badges -->
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                    <Border Name="DockerBadge" Background="#0C2340" BorderBrush="#0284C7" BorderThickness="1" CornerRadius="8" Padding="10,6" Margin="0,0,8,0">
+                    <Border Name="DockerBadge"
+                            Background="#FFF7ED" BorderBrush="#F97316"
+                            BorderThickness="2" CornerRadius="10"
+                            Padding="14,8" Margin="0,0,10,0">
                         <StackPanel Orientation="Horizontal">
-                            <Ellipse Name="DockerDot" Width="8" Height="8" Fill="#38BDF8" Margin="0,0,6,0"/>
-                            <TextBlock Name="DockerStatusText" Text="DOCKER CHECKING" Foreground="#BAE6FD" FontSize="11" FontWeight="Bold"/>
+                            <Ellipse Name="DockerDot" Width="12" Height="12" Fill="#F97316" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                            <TextBlock Name="DockerStatusText" Text="DOCKER..."
+                                       Foreground="#C2410C" FontSize="13" FontWeight="Bold" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Border>
-                    <Border Name="ServerBadge" Background="#1E1B2E" BorderBrush="#8A2BE2" BorderThickness="1" CornerRadius="8" Padding="10,6" Margin="0,0,8,0">
+                    <Border Name="ServerBadge"
+                            Background="#FEF2F2" BorderBrush="#EF4444"
+                            BorderThickness="2" CornerRadius="10" Padding="14,8">
                         <StackPanel Orientation="Horizontal">
-                            <Ellipse Name="ServerDot" Width="8" Height="8" Fill="#EF4444" Margin="0,0,6,0"/>
-                            <TextBlock Name="ServerStatusText" Text="SERVER OFFLINE" Foreground="#E2E8F0" FontSize="11" FontWeight="Bold"/>
+                            <Ellipse Name="ServerDot" Width="12" Height="12" Fill="#EF4444" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                            <TextBlock Name="ServerStatusText" Text="SERVER OFFLINE"
+                                       Foreground="#B91C1C" FontSize="13" FontWeight="Bold" VerticalAlignment="Center"/>
                         </StackPanel>
-                    </Border>
-                    <Border Background="#062E27" BorderBrush="#10B981" BorderThickness="1" CornerRadius="8" Padding="10,6">
-                        <TextBlock Text="DB READY" Foreground="#34D399" FontSize="11" FontWeight="Bold"/>
                     </Border>
                 </StackPanel>
             </Grid>
         </Border>
 
-        <!-- 2. SERVER & CONTAINER CONTROL DECK -->
-        <Border Grid.Row="1" Background="#0B0F17" BorderBrush="#1A2332" BorderThickness="1" CornerRadius="12" Padding="16" Margin="0,0,0,14">
-            <StackPanel>
-                <Grid Margin="0,0,0,10">
-                    <TextBlock Text="KONTROL SERVER (DOCKER &amp; LOCAL)" Foreground="#64748B" FontSize="11" FontWeight="Bold"/>
-                    <TextBlock Text="Port: 8000 | URL: http://localhost:8000" Foreground="#00F2FE" FontSize="11" HorizontalAlignment="Right" FontWeight="SemiBold"/>
-                </Grid>
+        <!-- =========================================================
+             ROW 1 : LAN INFO BAR
+        ========================================================= -->
+        <Border Grid.Row="1"
+                Background="#EFF6FF"
+                BorderBrush="#93C5FD"
+                BorderThickness="2"
+                CornerRadius="12"
+                Padding="16,10"
+                Margin="0,0,0,14">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-                <UniformGrid Columns="5">
-                    <Button Name="BtnDockerUp" Margin="3" Background="#0284C7" BorderBrush="#38BDF8">
-                        <TextBlock Text="[+] Docker Compose Up" FontWeight="Bold"/>
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                    <TextBlock Text="[ IP KOMPUTER INI ]  " Foreground="#1D4ED8" FontWeight="ExtraBold" FontSize="13"/>
+                    <TextBlock Name="LanIpText" Text="Mendeteksi..." Foreground="#1E40AF" FontSize="13" FontWeight="Bold"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <TextBlock Text="[ AKSES WEBSITE ]  " Foreground="#1D4ED8" FontWeight="ExtraBold" FontSize="13"/>
+                    <TextBlock Name="LanUrlText" Text="Mendeteksi..." Foreground="#0369A1" FontSize="13" FontWeight="Bold"/>
+                </StackPanel>
+
+                <TextBlock Grid.Column="2"
+                           Text="Bagikan alamat ini ke HP atau laptop lain di jaringan Wi-Fi yang sama"
+                           Foreground="#3B82F6" FontSize="11.5" FontStyle="Italic" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+
+        <!-- =========================================================
+             ROW 2 : KONTROL SERVER (4 tombol besar)
+        ========================================================= -->
+        <Border Grid.Row="2"
+                Background="#FFFFFF"
+                BorderBrush="#CBD5E1"
+                BorderThickness="2"
+                CornerRadius="14"
+                Padding="18"
+                Margin="0,0,0,14">
+            <StackPanel>
+                <TextBlock Text="1.  KONTROL SERVER DAN WEBSITE"
+                           Foreground="#1E293B" FontSize="13" FontWeight="ExtraBold" Margin="0,0,0,12"/>
+                <UniformGrid Columns="4" Rows="1">
+
+                    <!-- NYALAKAN SERVER -->
+                    <Button Name="BtnDockerUp" Margin="4"
+                            Background="#15803D" BorderBrush="#166534" Foreground="#FFFFFF">
+                        <StackPanel>
+                            <TextBlock Text="[ NYALAKAN ]" FontSize="14" FontWeight="ExtraBold" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Server Docker" FontSize="12" HorizontalAlignment="Center"/>
+                        </StackPanel>
                     </Button>
-                    <Button Name="BtnDockerDown" Margin="3" Background="#1E293B" BorderBrush="#475569">
-                        <TextBlock Text="[-] Docker Stop / Down"/>
+
+                    <!-- HENTIKAN SERVER -->
+                    <Button Name="BtnDockerDown" Margin="4"
+                            Background="#FEF2F2" BorderBrush="#DC2626" Foreground="#B91C1C">
+                        <StackPanel>
+                            <TextBlock Text="[ HENTIKAN ]" FontSize="14" FontWeight="ExtraBold" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Server Docker" FontSize="12" HorizontalAlignment="Center"/>
+                        </StackPanel>
                     </Button>
-                    <Button Name="BtnStartLocal" Margin="3" Background="#1E293B" BorderBrush="#64748B">
-                        <TextBlock Text="[>] Start Local Server"/>
+
+                    <!-- BUKA WEBSITE -->
+                    <Button Name="BtnOpenBrowser" Margin="4"
+                            Background="#0284C7" BorderBrush="#0369A1" Foreground="#FFFFFF">
+                        <StackPanel>
+                            <TextBlock Text="[ BUKA WEBSITE ]" FontSize="14" FontWeight="ExtraBold" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Halaman Publik" FontSize="12" HorizontalAlignment="Center"/>
+                        </StackPanel>
                     </Button>
-                    <Button Name="BtnOpenBrowser" Margin="3" Background="#10B981" BorderBrush="#34D399" Foreground="#07090E">
-                        <TextBlock Text="[*] Buka Website Publik" FontWeight="Bold"/>
+
+                    <!-- BUKA ADMIN -->
+                    <Button Name="BtnOpenAdmin" Margin="4"
+                            Background="#7C3AED" BorderBrush="#6D28D9" Foreground="#FFFFFF">
+                        <StackPanel>
+                            <TextBlock Text="[ ADMIN PANEL ]" FontSize="14" FontWeight="ExtraBold" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Dashboard Admin" FontSize="12" HorizontalAlignment="Center"/>
+                        </StackPanel>
                     </Button>
-                    <Button Name="BtnOpenAdmin" Margin="3" Background="#8A2BE2" BorderBrush="#A855F7">
-                        <TextBlock Text="[#] Buka Admin Panel" FontWeight="Bold"/>
-                    </Button>
+
                 </UniformGrid>
             </StackPanel>
         </Border>
 
-        <!-- 3. ACTION TOOLS & DATABASE WORKSPACE -->
-        <Border Grid.Row="2" Background="#0B0F17" BorderBrush="#1A2332" BorderThickness="1" CornerRadius="12" Padding="16" Margin="0,0,0,14">
+        <!-- =========================================================
+             ROW 3 : ALAT OPERASIONAL (5 tombol utilitas)
+        ========================================================= -->
+        <Border Grid.Row="3"
+                Background="#FFFFFF"
+                BorderBrush="#CBD5E1"
+                BorderThickness="2"
+                CornerRadius="14"
+                Padding="18"
+                Margin="0,0,0,14">
             <StackPanel>
-                <TextBlock Text="ALAT MANAJEMEN DATABASE, BUILD, &amp; PENGUJIAN" Foreground="#64748B" FontSize="11" FontWeight="Bold" Margin="0,0,0,10"/>
+                <TextBlock Text="2.  ALAT DATABASE, TAMPILAN, DAN PENGUJIAN"
+                           Foreground="#1E293B" FontSize="13" FontWeight="ExtraBold" Margin="0,0,0,12"/>
+                <UniformGrid Columns="5" Rows="1">
 
-                <UniformGrid Columns="5">
-                    <Button Name="BtnMigrateSeed" Margin="3">
-                        <TextBlock Text="[DB] Migrate &amp; Seed DB"/>
+                    <Button Name="BtnMigrateSeed" Margin="3" Height="46"
+                            Background="#F0FDF4" BorderBrush="#4ADE80">
+                        <StackPanel>
+                            <TextBlock Text="[DB] Isi Ulang" FontSize="12.5" FontWeight="ExtraBold" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Database" FontSize="11" HorizontalAlignment="Center"/>
+                        </StackPanel>
                     </Button>
-                    <Button Name="BtnBuildProd" Margin="3">
-                        <TextBlock Text="[Vite] Build Production"/>
+
+                    <Button Name="BtnBuildProd" Margin="3" Height="46"
+                            Background="#FFFBEB" BorderBrush="#FCD34D">
+                        <StackPanel>
+                            <TextBlock Text="[BUILD] Tampilan" FontSize="12.5" FontWeight="ExtraBold" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Kompilasi Vite" FontSize="11" HorizontalAlignment="Center"/>
+                        </StackPanel>
                     </Button>
-                    <Button Name="BtnClearCache" Margin="3">
-                        <TextBlock Text="[Cache] Clear Cache"/>
+
+                    <Button Name="BtnClearCache" Margin="3" Height="46"
+                            Background="#F8FAFC" BorderBrush="#94A3B8">
+                        <StackPanel>
+                            <TextBlock Text="[CACHE] Bersih" FontSize="12.5" FontWeight="ExtraBold" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Hapus Cache" FontSize="11" HorizontalAlignment="Center"/>
+                        </StackPanel>
                     </Button>
-                    <Button Name="BtnRunTests" Margin="3">
-                        <TextBlock Text="[Test] Run PHPUnit"/>
+
+                    <Button Name="BtnRunTests" Margin="3" Height="46"
+                            Background="#FAF5FF" BorderBrush="#C084FC">
+                        <StackPanel>
+                            <TextBlock Text="[TEST] Periksa" FontSize="12.5" FontWeight="ExtraBold" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Uji Kelayakan" FontSize="11" HorizontalAlignment="Center"/>
+                        </StackPanel>
                     </Button>
-                    <Button Name="BtnDockerLogs" Margin="3">
-                        <TextBlock Text="[Logs] Docker Logs"/>
+
+                    <Button Name="BtnDockerLogs" Margin="3" Height="46"
+                            Background="#F0F9FF" BorderBrush="#7DD3FC">
+                        <StackPanel>
+                            <TextBlock Text="[LOG] Docker" FontSize="12.5" FontWeight="ExtraBold" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Lihat Log Server" FontSize="11" HorizontalAlignment="Center"/>
+                        </StackPanel>
                     </Button>
+
                 </UniformGrid>
             </StackPanel>
         </Border>
 
-        <!-- 4. LIVE CONSOLE LOG OUTPUT -->
-        <Border Grid.Row="3" Background="#0B0F17" BorderBrush="#1A2332" BorderThickness="1" CornerRadius="12" Padding="16">
+        <!-- =========================================================
+             ROW 4 : LOG BOX
+        ========================================================= -->
+        <Border Grid.Row="4"
+                Background="#FFFFFF"
+                BorderBrush="#CBD5E1"
+                BorderThickness="2"
+                CornerRadius="14"
+                Padding="18"
+                Margin="0,0,0,14">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0" Margin="0,0,0,8">
-                    <TextBlock Text="CONSOLE &amp; DEPLOYMENT OUTPUT" Foreground="#64748B" FontSize="11" FontWeight="Bold"/>
-                    <Button Name="BtnClearLog" HorizontalAlignment="Right" Padding="8,3" FontSize="10" Background="Transparent" BorderBrush="#334155">
-                        <TextBlock Text="Bersihkan Layar"/>
+                <Grid Grid.Row="0" Margin="0,0,0,10">
+                    <TextBlock Text="3.  CATATAN AKTIVITAS DAN STATUS PROSES"
+                               Foreground="#1E293B" FontSize="13" FontWeight="ExtraBold"
+                               VerticalAlignment="Center"/>
+                    <Button Name="BtnClearLog" HorizontalAlignment="Right"
+                            Height="32" Padding="14,4" FontSize="12"
+                            Background="#F1F5F9" BorderBrush="#CBD5E1" Foreground="#475569">
+                        <TextBlock Text="Bersihkan Catatan"/>
                     </Button>
                 </Grid>
 
-                <TextBox Name="LogBox" Grid.Row="1" 
-                         Background="#07090E" Foreground="#38BDF8" 
-                         BorderBrush="#1E293B" BorderThickness="1" 
-                         FontFamily="Consolas, Lucida Console, Courier New" FontSize="12"
-                         IsReadOnly="True" TextWrapping="Wrap" 
-                         VerticalScrollBarVisibility="Auto" Padding="12"/>
+                <TextBox Name="LogBox" Grid.Row="1"
+                         Background="#F8FAFC" Foreground="#0F172A"
+                         BorderBrush="#E2E8F0" BorderThickness="1.5"
+                         FontFamily="Consolas, Lucida Console" FontSize="13"
+                         IsReadOnly="True" TextWrapping="Wrap"
+                         VerticalScrollBarVisibility="Auto" Padding="14"/>
             </Grid>
         </Border>
 
-        <!-- 5. FOOTER -->
-        <Grid Grid.Row="4" Margin="0,12,0,0">
-            <TextBlock Text="Dezzly Creative Studio Platform | Laravel + Tailwind + SQLite / Docker Container" Foreground="#64748B" FontSize="11" VerticalAlignment="Center"/>
+        <!-- =========================================================
+             ROW 5 : FOOTER
+        ========================================================= -->
+        <Grid Grid.Row="5">
+            <TextBlock Text="Dezzly Creative Studio  |  Laravel 13 + Tailwind v4 + SQLite + Docker"
+                       Foreground="#64748B" FontSize="12" VerticalAlignment="Center" FontWeight="SemiBold"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Name="BtnGitStatus" Padding="12,6" Margin="0,0,8,0" Background="#1E293B" FontSize="11">
-                    <TextBlock Text="[Git] Status Repository"/>
+
+                <Button Name="BtnGitStatus" Height="40" Padding="16,6" Margin="0,0,10,0"
+                        Background="#F1F5F9" BorderBrush="#CBD5E1" FontSize="12">
+                    <TextBlock Text="[GIT] Cek Perubahan File"/>
                 </Button>
-                <Button Name="BtnQuickDeploy" Padding="14,6" Background="#2563EB" BorderBrush="#60A5FA" FontSize="11">
-                    <TextBlock Text="[Deploy] Quick Git Commit" FontWeight="Bold"/>
+
+                <Button Name="BtnQuickDeploy" Height="40" Padding="20,6"
+                        Background="#0369A1" BorderBrush="#0284C7" Foreground="#FFFFFF" FontSize="12">
+                    <TextBlock Text="[UPLOAD] Simpan dan Kirim ke GitHub" FontWeight="Bold"/>
                 </Button>
+
             </StackPanel>
         </Grid>
+
     </Grid>
 </Window>
 "@
 
 $stringReader = New-Object System.IO.StringReader($xaml)
-$xmlReader = [System.Xml.XmlReader]::Create($stringReader)
-$window = [Windows.Markup.XamlReader]::Load($xmlReader)
+$xmlReader    = [System.Xml.XmlReader]::Create($stringReader)
+$window       = [Windows.Markup.XamlReader]::Load($xmlReader)
 
-# Map UI Controls
+# -----------------------------------------------------------------------
+# Map Controls
+# -----------------------------------------------------------------------
 $btnDockerUp      = $window.FindName("BtnDockerUp")
 $btnDockerDown    = $window.FindName("BtnDockerDown")
-$btnStartLocal    = $window.FindName("BtnStartLocal")
 $btnOpenBrowser   = $window.FindName("BtnOpenBrowser")
 $btnOpenAdmin     = $window.FindName("BtnOpenAdmin")
 $btnMigrateSeed   = $window.FindName("BtnMigrateSeed")
@@ -211,207 +361,236 @@ $btnClearLog      = $window.FindName("BtnClearLog")
 $logBox           = $window.FindName("LogBox")
 $serverDot        = $window.FindName("ServerDot")
 $serverStatusText = $window.FindName("ServerStatusText")
+$serverBadge      = $window.FindName("ServerBadge")
 $dockerDot        = $window.FindName("DockerDot")
 $dockerStatusText = $window.FindName("DockerStatusText")
+$dockerBadge      = $window.FindName("DockerBadge")
+$lanIpText        = $window.FindName("LanIpText")
+$lanUrlText       = $window.FindName("LanUrlText")
 
-# Helper Logger
-function Write-GuiLog([string]$message, [string]$type="INFO") {
+# -----------------------------------------------------------------------
+# Helper: Log Writer
+# -----------------------------------------------------------------------
+function Write-GuiLog([string]$message, [string]$type = "INFO") {
     $timestamp = Get-Date -Format "HH:mm:ss"
-    $formatted = "[$timestamp] [$type] $message`r`n"
-    $logBox.AppendText($formatted)
+    $logBox.AppendText("[$timestamp] [$type] $message`r`n")
     $logBox.ScrollToEnd()
 }
 
-Write-GuiLog "Dezzly Creative Controller siap digunakan." "SYSTEM"
-Write-GuiLog "Direktori Kerja: $projectRoot" "INFO"
+# -----------------------------------------------------------------------
+# Populate LAN info bar
+# -----------------------------------------------------------------------
+$lanIpText.Text  = $lanIp
+$lanUrlText.Text = $baseUrl
 
-# Check Docker Environment
+# -----------------------------------------------------------------------
+# Startup logs
+# -----------------------------------------------------------------------
+Write-GuiLog "Panel Kendali Dezzly Creative siap digunakan." "SISTEM"
+Write-GuiLog "Folder proyek: $projectRoot" "INFO"
+Write-GuiLog "IP jaringan terdeteksi: $lanIp" "JARINGAN"
+Write-GuiLog "Alamat akses website: $baseUrl" "JARINGAN"
+Write-GuiLog "Bagikan alamat di atas ke perangkat lain di jaringan Wi-Fi yang sama." "INFO"
+
+# -----------------------------------------------------------------------
+# Docker Detection
+# -----------------------------------------------------------------------
 $hasDocker = Get-Command "docker" -ErrorAction SilentlyContinue
 if ($hasDocker) {
-    $dockerDot.Fill = [System.Windows.Media.Brushes]::LimeGreen
-    $dockerStatusText.Text = "DOCKER TERSEDIA"
-    $dockerStatusText.Foreground = [System.Windows.Media.Brushes]::LightGreen
-    Write-GuiLog "Docker terdeteksi di sistem Windows." "DOCKER"
+    $dockerDot.Fill            = [System.Windows.Media.Brushes]::ForestGreen
+    $dockerStatusText.Text     = "DOCKER AKTIF"
+    $dockerStatusText.Foreground = [System.Windows.Media.Brushes]::DarkGreen
+    $dockerBadge.Background    = [System.Windows.Media.Brushes]::Honeydew
+    $dockerBadge.BorderBrush   = [System.Windows.Media.Brushes]::SeaGreen
+    Write-GuiLog "Docker Desktop terdeteksi dan siap." "DOCKER"
 } else {
-    $dockerDot.Fill = [System.Windows.Media.Brushes]::Orange
-    $dockerStatusText.Text = "DOCKER BELUM AKTIF"
-    $dockerStatusText.Foreground = [System.Windows.Media.Brushes]::Gold
-    Write-GuiLog "Docker belum terpasang di PATH sistem. Anda dapat menggunakan mode [Start Local Server] (PHP 8.4 Laragon) yang sudah siap 100%!" "NOTICE"
+    $dockerDot.Fill            = [System.Windows.Media.Brushes]::OrangeRed
+    $dockerStatusText.Text     = "DOCKER BELUM AKTIF"
+    $dockerStatusText.Foreground = [System.Windows.Media.Brushes]::OrangeRed
+    Write-GuiLog "Docker belum terdeteksi. Buka Docker Desktop terlebih dahulu." "PERHATIAN"
 }
 
-# Check Server Status
+# -----------------------------------------------------------------------
+# Server Badge Update
+# -----------------------------------------------------------------------
 function Update-ServerStatus([bool]$isRunning) {
     if ($isRunning) {
-        $serverDot.Fill = [System.Windows.Media.Brushes]::LimeGreen
-        $serverStatusText.Text = "ONLINE: PORT 8000"
-        $serverStatusText.Foreground = [System.Windows.Media.Brushes]::LightGreen
+        $serverDot.Fill              = [System.Windows.Media.Brushes]::ForestGreen
+        $serverStatusText.Text       = "SERVER AKTIF  (Port 8000)"
+        $serverStatusText.Foreground = [System.Windows.Media.Brushes]::DarkGreen
+        $serverBadge.Background      = [System.Windows.Media.Brushes]::Honeydew
+        $serverBadge.BorderBrush     = [System.Windows.Media.Brushes]::SeaGreen
     } else {
-        $serverDot.Fill = [System.Windows.Media.Brushes]::Red
-        $serverStatusText.Text = "SERVER OFFLINE"
-        $serverStatusText.Foreground = [System.Windows.Media.Brushes]::Salmon
+        $serverDot.Fill              = [System.Windows.Media.Brushes]::Crimson
+        $serverStatusText.Text       = "SERVER OFFLINE"
+        $serverStatusText.Foreground = [System.Windows.Media.Brushes]::DarkRed
+        $serverBadge.Background      = [System.Windows.Media.Brushes]::MistyRose
+        $serverBadge.BorderBrush     = [System.Windows.Media.Brushes]::LightCoral
     }
 }
 
-# 1. Docker Compose Up (with Friendly Smart Fallback)
+# -----------------------------------------------------------------------
+# Button: Nyalakan Server Docker
+# -----------------------------------------------------------------------
 $btnDockerUp.Add_Click({
     if (-not (Get-Command "docker" -ErrorAction SilentlyContinue)) {
-        Write-GuiLog "Docker Desktop belum terdeteksi di Windows." "WARNING"
-        $ans = [System.Windows.MessageBox]::Show(
-            "Docker Desktop belum terpasang di sistem Windows Anda.`n`nApakah Anda ingin langsung menyalakan website menggunakan Local Server (PHP 8.4) sekarang secara otomatis?", 
-            "Docker Belum Terpasang", 
-            [System.Windows.MessageBoxButton]::YesNo, 
-            [System.Windows.MessageBoxImage]::Question
-        )
-
-        if ($ans -eq [System.Windows.MessageBoxResult]::Yes) {
-            Write-GuiLog "Memulai server lokal Laravel (PHP 8.4) di port 8000..." "SERVER"
-            Start-Process php -ArgumentList "artisan serve --port=8000" -WorkingDirectory $projectRoot -WindowStyle Hidden
-            Start-Sleep -Seconds 1
-            Update-ServerStatus $true
-            Write-GuiLog "Server lokal aktif di http://127.0.0.1:8000" "SUCCESS"
-            Start-Process "http://localhost:8000"
-        }
+        Write-GuiLog "Docker Desktop belum berjalan. Buka dulu dari Start Menu." "PERHATIAN"
+        [System.Windows.MessageBox]::Show(
+            "Docker Desktop belum berjalan.`n`nSilakan buka aplikasi Docker Desktop di Windows, tunggu sampai ikon Docker di Taskbar menjadi hijau, lalu klik tombol ini kembali.",
+            "Docker Belum Aktif",
+            [System.Windows.MessageBoxButton]::OK,
+            [System.Windows.MessageBoxImage]::Information
+        ) | Out-Null
         return
     }
-
-    Write-GuiLog "Menjalankan: docker compose up -d --build..." "DOCKER"
+    Write-GuiLog "Menyalakan kontainer Docker Dezzly Creative..." "PROSES"
     $output = docker compose up -d 2>&1
     Write-GuiLog ($output -join "`r`n") "DOCKER"
     Update-ServerStatus $true
-    Write-GuiLog "Kontainer Docker Dezzly Creative telah berjalan di http://localhost:8000" "SUCCESS"
+    Write-GuiLog "Server aktif! Buka browser di alamat: $baseUrl" "SUKSES"
+    Write-GuiLog "Perangkat lain di jaringan dapat akses: $baseUrl" "JARINGAN"
 })
 
-# 2. Docker Compose Down
+# -----------------------------------------------------------------------
+# Button: Hentikan Server
+# -----------------------------------------------------------------------
 $btnDockerDown.Add_Click({
+    Write-GuiLog "Menghentikan server..." "PROSES"
     if (Get-Command "docker" -ErrorAction SilentlyContinue) {
-        Write-GuiLog "Menghentikan kontainer Docker..." "DOCKER"
         $output = docker compose down 2>&1
         Write-GuiLog ($output -join "`r`n") "DOCKER"
     }
-    
-    # Also stop local PHP processes if any
     Get-Process -Name "php" -ErrorAction SilentlyContinue | Stop-Process -Force
     Update-ServerStatus $false
-    Write-GuiLog "Seluruh layanan server (Docker & Local) telah dihentikan." "SUCCESS"
+    Write-GuiLog "Server telah dimatikan." "SELESAI"
 })
 
-# 3. Start Local Server
-$btnStartLocal.Add_Click({
-    Write-GuiLog "Memulai server lokal Laravel (PHP 8.4) di port 8000..." "SERVER"
-    try {
-        Start-Process php -ArgumentList "artisan serve --port=8000" -WorkingDirectory $projectRoot -WindowStyle Hidden
-        Start-Sleep -Seconds 1
-        Update-ServerStatus $true
-        Write-GuiLog "Server lokal aktif di http://127.0.0.1:8000" "SUCCESS"
-    } catch {
-        Write-GuiLog "Gagal memulai server lokal: $_" "ERROR"
-    }
-})
-
-# 4. Open Website in Browser
+# -----------------------------------------------------------------------
+# Button: Buka Website Publik
+# -----------------------------------------------------------------------
 $btnOpenBrowser.Add_Click({
-    Write-GuiLog "Membuka website di browser default: http://localhost:8000" "ACTION"
-    Start-Process "http://localhost:8000"
+    Write-GuiLog "Membuka halaman website: $baseUrl" "AKSI"
+    Start-Process $baseUrl
 })
 
-# 5. Open Admin Panel
+# -----------------------------------------------------------------------
+# Button: Buka Admin Panel
+# -----------------------------------------------------------------------
 $btnOpenAdmin.Add_Click({
-    Write-GuiLog "Membuka Admin Dashboard: http://localhost:8000/admin" "ACTION"
-    Start-Process "http://localhost:8000/admin"
+    Write-GuiLog "Membuka halaman admin: $adminUrl" "AKSI"
+    Start-Process $adminUrl
 })
 
-# 6. Migrate & Seed Database
+# -----------------------------------------------------------------------
+# Button: Isi Ulang Database
+# -----------------------------------------------------------------------
 $btnMigrateSeed.Add_Click({
-    Write-GuiLog "Menjalankan migrasi database dan pengisian katalog paket..." "DATABASE"
-    if (Get-Command "docker" -ErrorAction SilentlyContinue -and (docker compose ps -q app 2>$null)) {
-        Write-GuiLog "Mengeksekusi di dalam kontainer Docker..." "DOCKER"
+    Write-GuiLog "Memperbarui dan mengisi ulang database..." "DATABASE"
+    if (Get-Command "docker" -ErrorAction SilentlyContinue) {
         $out = docker compose exec -T app php artisan migrate:fresh --seed --no-interaction 2>&1
     } else {
         $out = php artisan migrate:fresh --seed --no-interaction 2>&1
     }
     Write-GuiLog ($out -join "`r`n") "DATABASE"
-    Write-GuiLog "Database & katalog produk (Sony Alpha & Paket Dokumentasi) berhasil diisi ulang!" "SUCCESS"
+    Write-GuiLog "Database berhasil diperbarui!" "SUKSES"
 })
 
-# 7. Build Production Assets
+# -----------------------------------------------------------------------
+# Button: Kompilasi Tampilan (Vite Build)
+# -----------------------------------------------------------------------
 $btnBuildProd.Add_Click({
-    Write-GuiLog "Mengompilasi aset frontend produksi (Vite)..." "BUILD"
+    Write-GuiLog "Mengompilasi aset tampilan (CSS dan JS)..." "PROSES"
     $buildOut = npm run build 2>&1
     Write-GuiLog ($buildOut -join "`r`n") "BUILD"
-    if (Get-Command "docker" -ErrorAction SilentlyContinue -and (docker compose ps -q app 2>$null)) {
+    if (Get-Command "docker" -ErrorAction SilentlyContinue) {
         docker compose exec -T app php artisan optimize 2>&1 | Out-Null
     } else {
         php artisan optimize 2>&1 | Out-Null
     }
-    Write-GuiLog "Build produksi selesai! Aset siap tayang." "SUCCESS"
+    Write-GuiLog "Kompilasi tampilan selesai!" "SUKSES"
 })
 
-# 8. Clear Cache
+# -----------------------------------------------------------------------
+# Button: Bersihkan Cache
+# -----------------------------------------------------------------------
 $btnClearCache.Add_Click({
-    Write-GuiLog "Membersihkan seluruh cache sistem..." "CACHE"
-    if (Get-Command "docker" -ErrorAction SilentlyContinue -and (docker compose ps -q app 2>$null)) {
+    Write-GuiLog "Membersihkan cache sistem..." "CACHE"
+    if (Get-Command "docker" -ErrorAction SilentlyContinue) {
         $out = docker compose exec -T app php artisan optimize:clear 2>&1
     } else {
         $out = php artisan optimize:clear 2>&1
     }
     Write-GuiLog ($out -join "`r`n") "CACHE"
-    Write-GuiLog "Cache berhasil dibersihkan." "SUCCESS"
+    Write-GuiLog "Cache berhasil dibersihkan." "SUKSES"
 })
 
-# 9. Run Tests
+# -----------------------------------------------------------------------
+# Button: Uji Kelayakan Sistem
+# -----------------------------------------------------------------------
 $btnRunTests.Add_Click({
-    Write-GuiLog "Menjalankan pengujian otomatis PHPUnit..." "TEST"
-    if (Get-Command "docker" -ErrorAction SilentlyContinue -and (docker compose ps -q app 2>$null)) {
+    Write-GuiLog "Menjalankan pengujian kelayakan seluruh fitur..." "PENGUJIAN"
+    if (Get-Command "docker" -ErrorAction SilentlyContinue) {
         $out = docker compose exec -T app php artisan test --compact 2>&1
     } else {
         $out = php artisan test --compact 2>&1
     }
-    Write-GuiLog ($out -join "`r`n") "TEST"
+    Write-GuiLog ($out -join "`r`n") "HASIL"
 })
 
-# 10. Docker Logs
+# -----------------------------------------------------------------------
+# Button: Lihat Log Docker
+# -----------------------------------------------------------------------
 $btnDockerLogs.Add_Click({
     if (Get-Command "docker" -ErrorAction SilentlyContinue) {
-        Write-GuiLog "Mengambil log kontainer Docker terbaru..." "DOCKER"
-        $out = docker compose logs --tail=30 2>&1
+        Write-GuiLog "Mengambil 40 baris log terakhir dari server Docker..." "DOCKER"
+        $out = docker compose logs --tail=40 2>&1
         Write-GuiLog ($out -join "`r`n") "DOCKER"
     } else {
-        Write-GuiLog "Perintah Docker belum tersedia di sistem ini." "NOTICE"
+        Write-GuiLog "Docker belum aktif. Tidak ada log untuk ditampilkan." "PERHATIAN"
     }
 })
 
-# 11. Clear Logs
+# -----------------------------------------------------------------------
+# Button: Bersihkan Catatan Log
+# -----------------------------------------------------------------------
 $btnClearLog.Add_Click({
     $logBox.Clear()
-    Write-GuiLog "Layar log telah dibersihkan." "INFO"
+    Write-GuiLog "Catatan log dibersihkan." "INFO"
 })
 
-# 12. Git Status
+# -----------------------------------------------------------------------
+# Button: Cek Perubahan Git
+# -----------------------------------------------------------------------
 $btnGitStatus.Add_Click({
-    Write-GuiLog "Memeriksa status repositori Git..." "GIT"
+    Write-GuiLog "Memeriksa perubahan file proyek di Git..." "GIT"
     $out = git status -s 2>&1
     if ([string]::IsNullOrWhiteSpace($out)) {
-        Write-GuiLog "Working tree bersih (tidak ada perubahan pending)." "GIT"
+        Write-GuiLog "Semua file sudah tersimpan rapi. Tidak ada perubahan tertunda." "GIT"
     } else {
         Write-GuiLog ($out -join "`r`n") "GIT"
     }
 })
 
-# 13. Quick Deploy
+# -----------------------------------------------------------------------
+# Button: Simpan dan Upload ke GitHub
+# -----------------------------------------------------------------------
 $btnQuickDeploy.Add_Click({
-    $commitMsg = "update: " + (Get-Date -Format "yyyy-MM-dd HH:mm") + " - Dezzly Studio Platform"
-    Write-GuiLog "Menyimpan perubahan ke Git ('$commitMsg')..." "GIT"
-    git add .
+    $commitMsg = "Pembaruan Dezzly Creative: " + (Get-Date -Format "dd-MM-yyyy HH:mm")
+    Write-GuiLog "Menyiapkan dan menyimpan seluruh perubahan file..." "GIT"
+    git add . 2>&1 | Out-Null
     $commitOut = git commit -m "$commitMsg" 2>&1
     Write-GuiLog ($commitOut -join "`r`n") "GIT"
-    Write-GuiLog "Mendorong (push) perubahan ke GitHub (origin/main)..." "DEPLOY"
+    Write-GuiLog "Mengunggah ke GitHub..." "DEPLOY"
     $pushOut = git push origin main 2>&1
     Write-GuiLog ($pushOut -join "`r`n") "DEPLOY"
-    Write-GuiLog "Berhasil deploy & sync ke GitHub: daffaa22/dezzly-digital-creative!" "SUCCESS"
+    Write-GuiLog "Berhasil tersimpan dan diunggah ke GitHub!" "SUKSES"
 })
 
-# Initial check for port 8000
+# -----------------------------------------------------------------------
+# Detect server status on startup
+# -----------------------------------------------------------------------
 $portActive = Test-NetConnection -ComputerName 127.0.0.1 -Port 8000 -InformationLevel Quiet -WarningAction SilentlyContinue
 Update-ServerStatus $portActive
 
+# Open Window
 $window.ShowDialog() | Out-Null
