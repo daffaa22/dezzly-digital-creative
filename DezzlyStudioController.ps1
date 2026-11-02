@@ -1,4 +1,4 @@
-# ==============================================================================
+﻿# ==============================================================================
 # DEZZLY CREATIVE - STUDIO & DEPLOYMENT CONTROLLER (POWERSHELL WPF GUI)
 # ==============================================================================
 Add-Type -AssemblyName PresentationFramework
@@ -323,7 +323,12 @@ $btnOpenAdmin.Add_Click({
 # 6. Migrate & Seed Database
 $btnMigrateSeed.Add_Click({
     Write-GuiLog "Menjalankan migrasi database dan pengisian katalog paket..." "DATABASE"
-    $out = php artisan migrate:fresh --seed --no-interaction 2>&1
+    if (Get-Command "docker" -ErrorAction SilentlyContinue -and (docker compose ps -q app 2>$null)) {
+        Write-GuiLog "Mengeksekusi di dalam kontainer Docker..." "DOCKER"
+        $out = docker compose exec -T app php artisan migrate:fresh --seed --no-interaction 2>&1
+    } else {
+        $out = php artisan migrate:fresh --seed --no-interaction 2>&1
+    }
     Write-GuiLog ($out -join "`r`n") "DATABASE"
     Write-GuiLog "Database & katalog produk (Sony Alpha & Paket Dokumentasi) berhasil diisi ulang!" "SUCCESS"
 })
@@ -333,14 +338,22 @@ $btnBuildProd.Add_Click({
     Write-GuiLog "Mengompilasi aset frontend produksi (Vite)..." "BUILD"
     $buildOut = npm run build 2>&1
     Write-GuiLog ($buildOut -join "`r`n") "BUILD"
-    php artisan optimize 2>&1 | Out-Null
+    if (Get-Command "docker" -ErrorAction SilentlyContinue -and (docker compose ps -q app 2>$null)) {
+        docker compose exec -T app php artisan optimize 2>&1 | Out-Null
+    } else {
+        php artisan optimize 2>&1 | Out-Null
+    }
     Write-GuiLog "Build produksi selesai! Aset siap tayang." "SUCCESS"
 })
 
 # 8. Clear Cache
 $btnClearCache.Add_Click({
     Write-GuiLog "Membersihkan seluruh cache sistem..." "CACHE"
-    $out = php artisan optimize:clear 2>&1
+    if (Get-Command "docker" -ErrorAction SilentlyContinue -and (docker compose ps -q app 2>$null)) {
+        $out = docker compose exec -T app php artisan optimize:clear 2>&1
+    } else {
+        $out = php artisan optimize:clear 2>&1
+    }
     Write-GuiLog ($out -join "`r`n") "CACHE"
     Write-GuiLog "Cache berhasil dibersihkan." "SUCCESS"
 })
@@ -348,7 +361,11 @@ $btnClearCache.Add_Click({
 # 9. Run Tests
 $btnRunTests.Add_Click({
     Write-GuiLog "Menjalankan pengujian otomatis PHPUnit..." "TEST"
-    $out = php artisan test --compact 2>&1
+    if (Get-Command "docker" -ErrorAction SilentlyContinue -and (docker compose ps -q app 2>$null)) {
+        $out = docker compose exec -T app php artisan test --compact 2>&1
+    } else {
+        $out = php artisan test --compact 2>&1
+    }
     Write-GuiLog ($out -join "`r`n") "TEST"
 })
 

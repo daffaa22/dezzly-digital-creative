@@ -1,4 +1,4 @@
-# ==============================================================================
+﻿# ==============================================================================
 # DEZZLY CREATIVE - INTERACTIVE TERMINAL CONTROLLER (POWERSHELL)
 # ==============================================================================
 $ErrorActionPreference = "Continue"
@@ -98,7 +98,11 @@ while ($true) {
         }
         "7" {
             Write-Host "`nMenjalankan migrasi database..." -ForegroundColor Cyan
-            php artisan migrate:fresh --seed
+            if (Get-Command "docker" -ErrorAction SilentlyContinue -and (docker compose ps -q app 2>$null)) {
+                docker compose exec -T app php artisan migrate:fresh --seed
+            } else {
+                php artisan migrate:fresh --seed
+            }
             Write-Host "`nDatabase selesai diperbarui!" -ForegroundColor Green
             Read-Host "Tekan Enter untuk kembali..."
         }

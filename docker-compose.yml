@@ -10,8 +10,6 @@ services:
       - "8000:8000"
     volumes:
       - .:/var/www/html
-      - /var/www/html/vendor
-      - /var/www/html/node_modules
     environment:
       - APP_ENV=local
       - APP_DEBUG=true
@@ -22,4 +20,3 @@ services:
 networks:
   dezzly_net:
     driver: bridge
-
