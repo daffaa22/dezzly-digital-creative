@@ -1,56 +1,72 @@
 @import 'tailwindcss';
 
+/* Class-based dark mode: applies when html has .dark class */
+@variant dark (&:is(.dark *));
+
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../views/**/*.blade.php';
 
 @theme {
     --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
-    --color-surface-bg: #f8fafc;
-    --color-surface-card: #ffffff;
-    --color-brand-primary: #0284c7;
-    --color-brand-primary-hover: #0369a1;
-    --color-brand-green: #15803d;
-    --color-brand-green-hover: #166534;
 }
 
+/* ===== BASE ===== */
 html {
     scroll-behavior: smooth;
-    background-color: #f8fafc;
-    color: #0f172a;
     font-size: 16px;
     line-height: 1.6;
+}
+
+html.dark {
+    color-scheme: dark;
 }
 
 ::selection {
     background-color: #bae6fd;
     color: #0c4a6e;
 }
+.dark ::selection {
+    background-color: #1e3a5f;
+    color: #e0f2fe;
+}
 
-/* Card Berorientasi Kemudahan Baca (High-Contrast Clean Surface) */
+/* ===== CARD SURFACES ===== */
 .card-clean {
     background-color: #ffffff;
     border: 1.5px solid #e2e8f0;
-    box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+    box-shadow: 0 4px 6px -1px rgba(15,23,42,0.05), 0 2px 4px -2px rgba(15,23,42,0.05);
+}
+.dark .card-clean {
+    background-color: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.4), 0 2px 4px -2px rgba(0,0,0,0.25);
 }
 
 .card-clean-highlight {
     background-color: #ffffff;
     border: 2px solid #0284c7;
-    box-shadow: 0 10px 15px -3px rgba(2, 132, 199, 0.12), 0 4px 6px -4px rgba(2, 132, 199, 0.1);
+    box-shadow: 0 10px 15px -3px rgba(2,132,199,0.12), 0 4px 6px -4px rgba(2,132,199,0.1);
+}
+.dark .card-clean-highlight {
+    background-color: #1e293b;
+    border-color: #0ea5e9;
+    box-shadow: 0 10px 15px -3px rgba(14,165,233,0.25), 0 4px 6px -4px rgba(14,165,233,0.15);
 }
 
-/* Scrollbar Bersih dan Jelas */
-::-webkit-scrollbar {
-    width: 10px;
-}
-::-webkit-scrollbar-track {
-    background: #f1f5f9;
-}
-::-webkit-scrollbar-thumb {
-    background: #94a3b8;
-    border-radius: 5px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: #64748b;
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #f1f5f9; }
+::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
+.dark ::-webkit-scrollbar-track { background: #1e293b; }
+.dark ::-webkit-scrollbar-thumb { background: #475569; border-radius: 5px; }
+.dark ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
+/* ===== SMOOTH TRANSITIONS ===== */
+*, *::before, *::after {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
 }
