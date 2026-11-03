@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'DEZZLY CREATIVE — Jasa Dokumentasi Event, Drone & Rental Kamera Sony')</title>
+    <title>@yield('title', 'DEZZLY CREATIVE - Jasa Dokumentasi Event, Drone & Rental Kamera Sony')</title>
     <meta name="description" content="Vendor terpercaya dokumentasi foto, video sinematik, penerbangan drone 4K dan sewa kamera Sony Alpha dengan harga terjangkau dan kualitas tajam.">
 
     <!-- Fonts: Plus Jakarta Sans (Mudah & Nyaman Dibaca Segala Usia) -->

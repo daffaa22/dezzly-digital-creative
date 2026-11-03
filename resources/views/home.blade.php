@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'DEZZLY CREATIVE — Jasa Dokumentasi Event, Drone & Rental Kamera Sony')
+@section('title', 'DEZZLY CREATIVE - Jasa Dokumentasi Event, Drone & Rental Kamera Sony')
 
 @section('content')
 <div x-data="dezzlyApp()">
@@ -77,7 +77,7 @@
             </div>
 
             <!-- Packages Grid (Kartu Bersih, Tulisan Besar, Kontras Tinggi) -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 items-stretch">
                 @foreach($packages as $pkg)
                 <div class="relative rounded-2xl transition-all duration-300 flex flex-col justify-between p-7 {{ $pkg->is_popular ? 'card-clean-highlight scale-[1.02] shadow-xl' : 'card-clean hover:border-slate-400' }}">
                     
