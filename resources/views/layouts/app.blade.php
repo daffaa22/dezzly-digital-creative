@@ -275,5 +275,91 @@
         </div>
     </a>
 
+    {{-- ======= FLOATING STUDIO MUSIC PLAYER: THE WEEKND VIBES ======= --}}
+    <div id="music-player-widget"
+         x-data="{
+             isPlaying: false,
+             volume: 0.35,
+             minimized: false,
+             promptVisible: true,
+             toggleMusic() {
+                 if (window.dezzlyAudio) {
+                     this.isPlaying = window.dezzlyAudio.togglePlay();
+                 }
+                 this.promptVisible = false;
+             },
+             updateVolume(val) {
+                 this.volume = val;
+                 if (window.dezzlyAudio) {
+                     window.dezzlyAudio.setVolume(val);
+                 }
+             }
+         }"
+         class="fixed bottom-5 left-5 z-40 flex flex-col items-start gap-2 select-none">
+
+        {{-- First-time Music Invitation Bubble --}}
+        <div x-show="promptVisible && !isPlaying"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 translate-y-2 scale-95"
+             x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+             class="bg-slate-900/90 dark:bg-slate-800/95 backdrop-blur-md text-white text-xs px-3.5 py-2 rounded-2xl border border-sky-500/40 shadow-xl flex items-center gap-2.5 max-w-xs">
+            <span class="text-base animate-bounce">🎵</span>
+            <span>Nyalakan musik The Weeknd untuk pengalaman studio yang hidup!</span>
+            <button @click="promptVisible = false" class="text-slate-400 hover:text-white font-bold p-1">&times;</button>
+        </div>
+
+        {{-- Main Player Capsule --}}
+        <div class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-2 border-slate-200 dark:border-slate-700 shadow-2xl rounded-2xl p-3 flex items-center gap-3 transition-all">
+
+            {{-- Spinning Vinyl Record Icon --}}
+            <button @click="toggleMusic()"
+                    class="relative w-11 h-11 rounded-full bg-gradient-to-tr from-slate-900 via-sky-950 to-slate-900 border-2 border-sky-400 flex items-center justify-center shrink-0 shadow-md group cursor-pointer"
+                    :class="isPlaying ? 'animate-[spin_4s_linear_infinite]' : ''"
+                    title="Putar / Jeda Musik">
+                {{-- Vinyl grooves --}}
+                <div class="w-6 h-6 rounded-full border border-sky-400/30 flex items-center justify-center">
+                    <div class="w-2.5 h-2.5 rounded-full bg-sky-400"></div>
+                </div>
+                {{-- Play/Pause Overlay indicator --}}
+                <div class="absolute inset-0 rounded-full bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span x-text="isPlaying ? '❚❚' : '▶'" class="text-white text-xs font-bold"></span>
+                </div>
+            </button>
+
+            {{-- Track Details & Animated Visualizer --}}
+            <div x-show="!minimized" x-transition class="flex flex-col pr-1">
+                <div class="flex items-center gap-2">
+                    <span class="text-xs font-extrabold text-slate-900 dark:text-white tracking-tight">The Weeknd</span>
+                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-sky-100 dark:bg-sky-900/50 text-sky-800 dark:text-sky-300">Blinding Lights Vibe</span>
+                </div>
+
+                <div class="flex items-center gap-3 mt-1">
+                    {{-- Dancing Audio Wave Visualizer Bars --}}
+                    <div class="flex items-end gap-1 h-6 w-14 shrink-0 py-0.5">
+                        <span class="w-1.5 rounded-full bg-[#0284C7] wave-bar-1" :class="!isPlaying ? 'paused-wave' : ''"></span>
+                        <span class="w-1.5 rounded-full bg-sky-400 wave-bar-2" :class="!isPlaying ? 'paused-wave' : ''"></span>
+                        <span class="w-1.5 rounded-full bg-indigo-500 wave-bar-3" :class="!isPlaying ? 'paused-wave' : ''"></span>
+                        <span class="w-1.5 rounded-full bg-emerald-400 wave-bar-4" :class="!isPlaying ? 'paused-wave' : ''"></span>
+                    </div>
+
+                    {{-- Play / Pause Action Button --}}
+                    <button @click="toggleMusic()"
+                            class="px-2.5 py-1 rounded-lg text-xs font-extrabold transition-all"
+                            :class="isPlaying ? 'bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-300 dark:border-red-700' : 'bg-[#0284C7] text-white shadow-sm hover:bg-[#0369A1]'">
+                        <span x-text="isPlaying ? 'Jeda' : 'Putar Musik'"></span>
+                    </button>
+                </div>
+            </div>
+
+            {{-- Minimize / Expand toggle button --}}
+            <button @click="minimized = !minimized"
+                    class="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 text-xs p-1"
+                    :title="minimized ? 'Perluas Pemutar' : 'Perkecil Pemutar'">
+                <span x-text="minimized ? '»' : '«'"></span>
+            </button>
+
+        </div>
+    </div>
+
 </body>
 </html>

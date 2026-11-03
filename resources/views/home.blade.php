@@ -8,8 +8,12 @@
     {{-- ===================================================================
          HERO SECTION
     =================================================================== --}}
-    <section class="relative pt-12 pb-20 bg-gradient-to-b from-sky-50/70 via-white to-slate-50/80 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800 border-b-2 border-slate-200 dark:border-slate-700">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section class="relative pt-12 pb-20 bg-gradient-to-b from-sky-50/70 via-white to-slate-50/80 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800 border-b-2 border-slate-200 dark:border-slate-700 overflow-hidden">
+        {{-- Interactive Ambient Glow Orbs --}}
+        <div class="absolute -top-16 -left-16 w-80 h-80 rounded-full bg-sky-400/20 dark:bg-sky-500/15 blur-3xl pointer-events-none animate-float-slow"></div>
+        <div class="absolute top-1/2 -right-20 w-96 h-96 rounded-full bg-emerald-400/15 dark:bg-indigo-500/15 blur-3xl pointer-events-none animate-float-reverse"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="text-center max-w-4xl mx-auto space-y-6">
 
                 {{-- Badge --}}
@@ -97,8 +101,8 @@
                 <div class="relative rounded-2xl flex flex-col justify-between p-6 sm:p-7 {{ $pkg->is_popular ? 'card-clean-highlight' : 'card-clean hover:border-slate-400 dark:hover:border-slate-500' }} transition-all duration-300">
 
                     @if($pkg->is_popular)
-                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 px-5 py-1.5 rounded-full bg-[#0284C7] text-white font-extrabold text-xs tracking-wider uppercase shadow-md whitespace-nowrap">
-                        Pilihan Paling Favorit
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 px-5 py-1.5 rounded-full shimmer-badge text-white font-extrabold text-xs tracking-wider uppercase shadow-lg shadow-sky-500/25 whitespace-nowrap">
+                        ★ Pilihan Paling Favorit
                     </div>
                     @endif
 
