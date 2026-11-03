@@ -54,6 +54,9 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    'whatsapp_number' => env('WHATSAPP_NUMBER', '6282146031398'),
+    'whatsapp_display' => env('WHATSAPP_DISPLAY', '0821-4603-1398'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

@@ -58,7 +58,7 @@ class RentalOrderController extends Controller
         ]);
 
         // Build WhatsApp Message
-        $adminPhone = config('app.whatsapp_number', '6281234567890');
+        $adminPhone = config('app.whatsapp_number', '6282146031398');
         $formattedDate = Carbon::parse($order->start_date)->isoFormat('D MMMM Y');
         $formattedTotal = 'Rp '.number_format($grandTotal, 0, ',', '.');
 

@@ -53,12 +53,12 @@
                 <span class="hidden sm:inline text-slate-400">Dokumentasi Event & Sewa Kamera Terpercaya</span>
             </div>
             <div class="flex items-center gap-4 text-xs font-semibold">
-                <a href="https://wa.me/6281234567890" target="_blank"
+                <a href="https://wa.me/6282146031398" target="_blank"
                    class="hover:text-emerald-400 transition-colors flex items-center gap-1.5 text-slate-300">
                     <svg class="w-3.5 h-3.5 text-emerald-400 fill-current" viewBox="0 0 24 24">
                         <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.174.086.275.072.376-.044.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564c.173.087.289.13.332.203.043.072.043.419-.101.824z"/>
                     </svg>
-                    WhatsApp: <strong class="text-emerald-400">0812-3456-7890</strong>
+                    WhatsApp: <strong class="text-emerald-400">0821-4603-1398</strong>
                 </a>
             </div>
         </div>
@@ -224,19 +224,19 @@
                     <strong class="text-slate-800 dark:text-slate-300">Jabodetabek dan sekitarnya</strong>
                     <span class="block text-xs mt-1">(Siap melayani perjalanan luar kota)</span>
                 </p>
-                <a href="https://wa.me/6281234567890" target="_blank"
+                <a href="https://wa.me/6282146031398" target="_blank"
                    class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 border-2 border-emerald-500 dark:border-emerald-600 text-emerald-800 dark:text-emerald-400 font-bold text-sm hover:bg-emerald-100 dark:hover:bg-emerald-900/50 transition-colors">
                     <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
                         <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.174.086.275.072.376-.044.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564c.173.087.289.13.332.203.043.072.043.419-.101.824z"/>
                     </svg>
-                    WhatsApp: 0812-3456-7890
+                    WhatsApp: 0821-4603-1398
                 </a>
             </div>
         </div>
     </footer>
 
     {{-- ======= FLOATING WHATSAPP CTA ======= --}}
-    <a href="https://wa.me/6281234567890?text=Halo%20Dezzly%20Creative,%20saya%20ingin%20konsultasi%20kebutuhan%20dokumentasi%20atau%20sewa%20kamera"
+    <a href="https://wa.me/6282146031398?text=Halo%20Dezzly%20Creative,%20saya%20ingin%20konsultasi%20kebutuhan%20dokumentasi%20atau%20sewa%20kamera"
        target="_blank"
        class="fixed bottom-5 right-5 z-50 flex items-center gap-3 bg-[#15803D] hover:bg-[#166534] text-white font-extrabold px-5 py-3.5 sm:px-6 sm:py-4 rounded-full shadow-2xl shadow-green-900/30 hover:scale-105 active:scale-95 transition-all border-2 border-white">
         <svg class="w-6 h-6 fill-current shrink-0" viewBox="0 0 24 24">

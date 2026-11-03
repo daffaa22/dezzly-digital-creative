@@ -466,7 +466,7 @@
                             <span class="text-slate-600 dark:text-slate-400 font-medium">
                                 Peserta: <strong class="text-slate-900 dark:text-white">{{ number_format($port->audience_count) }}+ Orang</strong>
                             </span>
-                            <a href="https://wa.me/6281234567890?text=Halo%20Dezzly,%20saya%20tertarik%20dengan%20studi%20kasus%20{{ urlencode($port->title) }}"
+                            <a href="https://wa.me/6282146031398?text=Halo%20Dezzly,%20saya%20tertarik%20dengan%20studi%20kasus%20{{ urlencode($port->title) }}"
                                target="_blank"
                                class="text-[#0284C7] dark:text-sky-400 font-extrabold hover:underline">
                                 Tanya Lebih Lanjut &rarr;

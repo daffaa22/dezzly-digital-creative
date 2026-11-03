@@ -48,7 +48,7 @@ class ServiceInquiryController extends Controller
             'status' => 'new',
         ]);
 
-        $adminPhone = config('app.whatsapp_number', '6281234567890');
+        $adminPhone = config('app.whatsapp_number', '6282146031398');
         $dateStr = $inquiry->event_date ? Carbon::parse($inquiry->event_date)->isoFormat('D MMMM Y') : 'Menyesuaikan';
 
         $message = "Halo Dezzly Creative, saya tertarik memesan jasa dokumentasi & produksi:\n"
