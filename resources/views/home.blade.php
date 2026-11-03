@@ -383,6 +383,86 @@
     </section>
 
     {{-- ===================================================================
+         SECTION: SYARAT & KETENTUAN SEWA KAMERA (SOP KEAMANAN UNIT)
+    =================================================================== --}}
+    <section id="terms" class="py-16 sm:py-20 bg-white dark:bg-slate-900 border-b-2 border-slate-200 dark:border-slate-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16 space-y-3">
+                <span class="text-[#0284C7] dark:text-sky-400 text-sm font-extrabold tracking-widest uppercase">Prosedur & SOP Keamanan</span>
+                <h2 class="font-extrabold text-2xl sm:text-3xl lg:text-4xl text-slate-900 dark:text-white">
+                    Syarat &amp; Ketentuan Sewa Kamera
+                </h2>
+                <p class="text-base text-slate-600 dark:text-slate-400">
+                    Proses sewa mudah, cepat, dan transparan. Harap perhatikan 4 poin utama sebelum melakukan serah terima unit di studio.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                {{-- Syarat 1: Identitas --}}
+                <div class="card-clean p-6 rounded-2xl space-y-3">
+                    <div class="w-12 h-12 rounded-xl bg-sky-100 dark:bg-sky-900/40 text-[#0284C7] dark:text-sky-400 flex items-center justify-center font-extrabold text-xl">
+                        1
+                    </div>
+                    <h3 class="font-extrabold text-lg text-slate-900 dark:text-white">Jaminan Identitas Asli</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Penyewa wajib menitipkan minimal <strong>2 identitas asli yang masih berlaku</strong> (KTP Asli + SIM / KK / Paspor / STNK kendaraan pribadi).
+                    </p>
+                </div>
+
+                {{-- Syarat 2: Uji Fisik Bersama --}}
+                <div class="card-clean p-6 rounded-2xl space-y-3">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 flex items-center justify-center font-extrabold text-xl">
+                        2
+                    </div>
+                    <h3 class="font-extrabold text-lg text-slate-900 dark:text-white">Cek Fisik &amp; Fungsi</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Sebelum dibawa pulang, penyewa dan petugas studio akan melakukan <strong>inspeksi bersama</strong>: sensor bersih, tombol responsif, LCD jernih, dan baterai terisi.
+                    </p>
+                </div>
+
+                {{-- Syarat 3: Perhitungan 24 Jam --}}
+                <div class="card-clean p-6 rounded-2xl space-y-3">
+                    <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400 flex items-center justify-center font-extrabold text-xl">
+                        3
+                    </div>
+                    <h3 class="font-extrabold text-lg text-slate-900 dark:text-white">Durasi &amp; Toleransi Waktu</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                        1 hari sewa dihitung <strong>penuh 24 jam</strong> sejak serah terima unit. Keterlambatan melebihi 1 jam dikenakan biaya per jam agar tidak bentrok dengan penyewa lain.
+                    </p>
+                </div>
+
+                {{-- Syarat 4: Tanggung Jawab --}}
+                <div class="card-clean p-6 rounded-2xl space-y-3">
+                    <div class="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400 flex items-center justify-center font-extrabold text-xl">
+                        4
+                    </div>
+                    <h3 class="font-extrabold text-lg text-slate-900 dark:text-white">Tanggung Jawab Pemakaian</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Seluruh gear dirawat secara berkala. Kerusakan akibat kelalaian (terjatuh, terkena air) menjadi tanggung jawab penyewa sesuai biaya servis resmi Sony.
+                    </p>
+                </div>
+
+            </div>
+
+            {{-- Tips Tambahan --}}
+            <div class="mt-8 p-5 rounded-2xl bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <span class="w-3 h-3 rounded-full bg-emerald-500 shrink-0"></span>
+                    <p class="text-sm text-slate-700 dark:text-slate-300">
+                        <strong>Tips Booking:</strong> Ingin sewa untuk akhir pekan atau libur panjang? Pesan 2–3 hari sebelumnya agar kamera incaran Anda sudah terkunci aman.
+                    </p>
+                </div>
+                <a href="#rental" class="shrink-0 px-5 py-2.5 rounded-xl bg-[#0284C7] hover:bg-[#0369A1] text-white text-xs font-bold whitespace-nowrap transition-colors">
+                    Pilih Kamera Sekarang &rarr;
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    {{-- ===================================================================
          SECTION 3: PORTOFOLIO
     =================================================================== --}}
     <section id="portfolio" class="py-16 sm:py-20 bg-white dark:bg-slate-900 border-b-2 border-slate-200 dark:border-slate-700">
@@ -560,6 +640,120 @@
                     Konsultasi Gratis via WhatsApp &rarr;
                 </button>
             </div>
+        </div>
+    </section>
+
+    {{-- ===================================================================
+         SECTION 5: FAQ (PERTANYAAN UMUM & JAWABAN INTERAKTIF)
+    =================================================================== --}}
+    <section id="faq" class="py-16 sm:py-20 bg-white dark:bg-slate-900 border-b-2 border-slate-200 dark:border-slate-700" x-data="{ activeFaq: null }">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="text-center max-w-2xl mx-auto mb-12 sm:mb-14 space-y-3">
+                <span class="text-[#0284C7] dark:text-sky-400 text-sm font-extrabold tracking-widest uppercase">Pertanyaan Umum</span>
+                <h2 class="font-extrabold text-2xl sm:text-3xl lg:text-4xl text-slate-900 dark:text-white">
+                    Frequently Asked Questions (FAQ)
+                </h2>
+                <p class="text-base text-slate-600 dark:text-slate-400">
+                    Jawaban cepat untuk hal-hal yang paling sering ditanyakan seputar jasa dokumentasi &amp; persewaan kamera kami.
+                </p>
+            </div>
+
+            <div class="space-y-4">
+
+                {{-- FAQ 1 --}}
+                <div class="card-clean rounded-2xl overflow-hidden">
+                    <button type="button"
+                            @click="activeFaq = (activeFaq === 1 ? null : 1)"
+                            class="w-full p-5 text-left font-extrabold text-base text-slate-900 dark:text-white flex items-center justify-between gap-4">
+                        <span>Apakah seluruh file foto dan video mentah (RAW) akan diberikan?</span>
+                        <span class="text-xl text-[#0284C7] dark:text-sky-400 font-bold transition-transform" :class="activeFaq === 1 ? 'rotate-45' : ''">+</span>
+                    </button>
+                    <div x-show="activeFaq === 1" x-transition class="p-5 pt-0 text-sm text-slate-600 dark:text-slate-400 border-t border-slate-100 dark:border-slate-700 leading-relaxed">
+                        <strong>Ya, tentu!</strong> Seluruh file foto mentah asli (RAW/JPEG Original) serta rekaman video dari seluruh sudut kamera dan drone akan kami serahkan melalui Google Drive High-Speed tanpa kompresi kualitas.
+                    </div>
+                </div>
+
+                {{-- FAQ 2 --}}
+                <div class="card-clean rounded-2xl overflow-hidden">
+                    <button type="button"
+                            @click="activeFaq = (activeFaq === 2 ? null : 2)"
+                            class="w-full p-5 text-left font-extrabold text-base text-slate-900 dark:text-white flex items-center justify-between gap-4">
+                        <span>Berapa lama proses editing foto dan video hingga selesai?</span>
+                        <span class="text-xl text-[#0284C7] dark:text-sky-400 font-bold transition-transform" :class="activeFaq === 2 ? 'rotate-45' : ''">+</span>
+                    </button>
+                    <div x-show="activeFaq === 2" x-transition class="p-5 pt-0 text-sm text-slate-600 dark:text-slate-400 border-t border-slate-100 dark:border-slate-700 leading-relaxed">
+                        Kami menjamin estimasi pengerjaan cepat dan tepat waktu: <strong>4 sampai 5 hari kerja</strong> untuk paket menengah dan premium. Untuk kebutuhan mendesak (same-day teaser / reels kilat di hari H), tim kami siap memberikan potongan highlight cepat dalam hitungan jam.
+                    </div>
+                </div>
+
+                {{-- FAQ 3 --}}
+                <div class="card-clean rounded-2xl overflow-hidden">
+                    <button type="button"
+                            @click="activeFaq = (activeFaq === 3 ? null : 3)"
+                            class="w-full p-5 text-left font-extrabold text-base text-slate-900 dark:text-white flex items-center justify-between gap-4">
+                        <span>Apakah tim dokumentasi Dezzly melayani acara di luar Jabodetabek?</span>
+                        <span class="text-xl text-[#0284C7] dark:text-sky-400 font-bold transition-transform" :class="activeFaq === 3 ? 'rotate-45' : ''">+</span>
+                    </button>
+                    <div x-show="activeFaq === 3" x-transition class="p-5 pt-0 text-sm text-slate-600 dark:text-slate-400 border-t border-slate-100 dark:border-slate-700 leading-relaxed">
+                        <strong>Bisa!</strong> Kami siap melayani acara di seluruh kota di Indonesia (Bandung, Yogyakarta, Surabaya, Bali, dsb). Biaya akomodasi dan transportasi perjalanan darat/udara disesuaikan secara transparan pada penawaran resmi.
+                    </div>
+                </div>
+
+                {{-- FAQ 4 --}}
+                <div class="card-clean rounded-2xl overflow-hidden">
+                    <button type="button"
+                            @click="activeFaq = (activeFaq === 4 ? null : 4)"
+                            class="w-full p-5 text-left font-extrabold text-base text-slate-900 dark:text-white flex items-center justify-between gap-4">
+                        <span>Apa saja kelengkapan bawaan saat menyewa kamera di Dezzly?</span>
+                        <span class="text-xl text-[#0284C7] dark:text-sky-400 font-bold transition-transform" :class="activeFaq === 4 ? 'rotate-45' : ''">+</span>
+                    </button>
+                    <div x-show="activeFaq === 4" x-transition class="p-5 pt-0 text-sm text-slate-600 dark:text-slate-400 border-t border-slate-100 dark:border-slate-700 leading-relaxed">
+                        Setiap unit sewa kamera sudah dilengkapi dengan: <strong>Bodi kamera Sony, minimal 2 unit baterai original, charger resmi, tali strap kamera empuk, tas pelindung tahan benturan</strong>, dan memory card high-speed (opsional/tersedia).
+                    </div>
+                </div>
+
+                {{-- FAQ 5 --}}
+                <div class="card-clean rounded-2xl overflow-hidden">
+                    <button type="button"
+                            @click="activeFaq = (activeFaq === 5 ? null : 5)"
+                            class="w-full p-5 text-left font-extrabold text-base text-slate-900 dark:text-white flex items-center justify-between gap-4">
+                        <span>Bagaimana mekanisme sistem pembayaran, DP, dan pelunasan?</span>
+                        <span class="text-xl text-[#0284C7] dark:text-sky-400 font-bold transition-transform" :class="activeFaq === 5 ? 'rotate-45' : ''">+</span>
+                    </button>
+                    <div x-show="activeFaq === 5" x-transition class="p-5 pt-0 text-sm text-slate-600 dark:text-slate-400 border-t border-slate-100 dark:border-slate-700 leading-relaxed">
+                        Untuk jasa dokumentasi, penguncian tanggal dilakukan dengan DP 30%–50%, dan pelunasan dapat dilakukan saat acara selesai atau sebelum penyerahan master file. Untuk sewa kamera, pembayaran sewa dilakukan di awal saat serah terima unit di studio.
+                    </div>
+                </div>
+
+                {{-- FAQ 6 --}}
+                <div class="card-clean rounded-2xl overflow-hidden">
+                    <button type="button"
+                            @click="activeFaq = (activeFaq === 6 ? null : 6)"
+                            class="w-full p-5 text-left font-extrabold text-base text-slate-900 dark:text-white flex items-center justify-between gap-4">
+                        <span>Apakah paket dengan rekaman drone sudah termasuk pilot berlisensi?</span>
+                        <span class="text-xl text-[#0284C7] dark:text-sky-400 font-bold transition-transform" :class="activeFaq === 6 ? 'rotate-45' : ''">+</span>
+                    </button>
+                    <div x-show="activeFaq === 6" x-transition class="p-5 pt-0 text-sm text-slate-600 dark:text-slate-400 border-t border-slate-100 dark:border-slate-700 leading-relaxed">
+                        <strong>Ya, betul!</strong> Paket dokumentasi kami yang menyertakan drone sudah mencakup unit drone 4K beserta pilot profesional berpengalaman, sehingga Anda tidak perlu memikirkan pengoperasian dan keselamatan penerbangan udara di lokasi.
+                    </div>
+                </div>
+
+            </div>
+
+            {{-- Still have questions banner --}}
+            <div class="mt-10 p-6 rounded-2xl bg-sky-50 dark:bg-sky-900/20 border-2 border-sky-200 dark:border-sky-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+                <div>
+                    <h4 class="font-extrabold text-base text-slate-900 dark:text-white">Masih punya pertanyaan khusus yang belum terjawab?</h4>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Konsultasikan langsung dengan tim CS kami via WhatsApp. Respon cepat &amp; ramah.</p>
+                </div>
+                <a href="https://wa.me/6282146031398?text=Halo%20Dezzly%20Creative,%20saya%20ingin%20tanya%20seputar%20layanan"
+                   target="_blank"
+                   class="shrink-0 px-6 py-3 rounded-xl bg-[#15803D] hover:bg-[#166534] text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-md">
+                    Chat WhatsApp (0821-4603-1398) &rarr;
+                </a>
+            </div>
+
         </div>
     </section>
 

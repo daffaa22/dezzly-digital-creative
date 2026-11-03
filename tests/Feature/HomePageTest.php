@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Package;
 use App\Models\RentalItem;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -31,14 +32,33 @@ class HomePageTest extends TestCase
     }
 
     /**
-     * Test that admin dashboard loads successfully.
+     * Test that admin dashboard requires authentication and loads when logged in.
      */
-    public function test_admin_dashboard_loads_successfully(): void
+    public function test_admin_dashboard_requires_authentication(): void
     {
+        // Unauthenticated request should redirect to login
         $response = $this->get('/admin');
+        $response->assertRedirect('/login');
 
-        $response->assertStatus(200);
-        $response->assertSee('Dashboard Operasional Dezzly');
+        // Authenticated admin should be able to view dashboard
+        $user = User::first();
+        $authResponse = $this->actingAs($user)->get('/admin');
+        $authResponse->assertStatus(200);
+        $authResponse->assertSee('Dashboard Operasional Dezzly');
+    }
+
+    /**
+     * Test admin login functionality.
+     */
+    public function test_admin_can_login_with_valid_credentials(): void
+    {
+        $response = $this->post('/login', [
+            'email' => 'admin@dezzlycreative.com',
+            'password' => 'dezzly123',
+        ]);
+
+        $response->assertRedirect(route('admin.dashboard'));
+        $this->assertAuthenticated();
     }
 
     /**

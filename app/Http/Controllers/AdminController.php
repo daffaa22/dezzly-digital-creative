@@ -88,6 +88,16 @@ class AdminController extends Controller
     }
 
     /**
+     * Display a print-ready invoice for a rental order.
+     */
+    public function printInvoice(RentalOrder $order): View
+    {
+        $order->load(['camera', 'lens']);
+
+        return view('admin.invoice', compact('order'));
+    }
+
+    /**
      * Toggle availability of a rental item.
      */
     public function toggleItemAvailability(RentalItem $item): RedirectResponse

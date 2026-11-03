@@ -8,6 +8,23 @@
     <title>@yield('title', 'DEZZLY CREATIVE - Jasa Dokumentasi Event, Drone & Sewa Kamera Sony')</title>
     <meta name="description" content="Vendor terpercaya dokumentasi foto, video sinematik, penerbangan drone 4K dan sewa kamera Sony Alpha. Harga transparan, hasil terjamin.">
 
+    {{-- Favicon --}}
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+
+    {{-- OpenGraph & Social Media Sharing (WhatsApp / Facebook / LinkedIn) --}}
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Dezzly Creative">
+    <meta property="og:title" content="DEZZLY CREATIVE - Jasa Dokumentasi Event, Drone & Sewa Kamera Sony">
+    <meta property="og:description" content="Vendor resmi dokumentasi foto/video sinematik, pilot drone 4K, dan rental kamera Sony Alpha Full Frame bergaransi di Jabodetabek & sekitarnya.">
+    <meta property="og:image" content="{{ asset('images/og-banner.svg') }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+
+    {{-- Twitter Card --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="DEZZLY CREATIVE - Studio Dokumentasi & Rental Kamera Sony">
+    <meta name="twitter:description" content="Vendor resmi foto, video sinematik, drone 4K dan sewa kamera Sony Alpha terpercaya.">
+    <meta name="twitter:image" content="{{ asset('images/og-banner.svg') }}">
+
     {{-- Anti-flash: apply saved theme BEFORE render to prevent white flash --}}
     <script>
         (function () {
@@ -81,11 +98,13 @@
             </a>
 
             {{-- Desktop Nav --}}
-            <nav class="hidden md:flex items-center gap-6 lg:gap-8 text-sm font-bold text-slate-700 dark:text-slate-300">
-                <a href="#services" class="hover:text-[#0284C7] dark:hover:text-sky-400 transition-colors py-1">Paket Dokumentasi</a>
+            <nav class="hidden md:flex items-center gap-5 lg:gap-7 text-sm font-bold text-slate-700 dark:text-slate-300">
+                <a href="#services" class="hover:text-[#0284C7] dark:hover:text-sky-400 transition-colors py-1">Paket</a>
                 <a href="#rental" class="hover:text-[#0284C7] dark:hover:text-sky-400 transition-colors py-1">Sewa Kamera</a>
+                <a href="#terms" class="hover:text-[#0284C7] dark:hover:text-sky-400 transition-colors py-1">Syarat Sewa</a>
                 <a href="#portfolio" class="hover:text-[#0284C7] dark:hover:text-sky-400 transition-colors py-1">Portofolio</a>
                 <a href="#benchmark" class="hover:text-[#0284C7] dark:hover:text-sky-400 transition-colors py-1">Keunggulan</a>
+                <a href="#faq" class="hover:text-[#0284C7] dark:hover:text-sky-400 transition-colors py-1">FAQ</a>
             </nav>
 
             {{-- Right: CTAs + Theme Toggle + Hamburger --}}
@@ -150,6 +169,10 @@
                class="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-bold text-slate-700 dark:text-slate-300 hover:bg-sky-50 dark:hover:bg-slate-800 hover:text-[#0284C7] transition-colors">
                 Sewa Kamera & Lensa
             </a>
+            <a href="#terms" @click="mobileMenu = false"
+               class="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-bold text-slate-700 dark:text-slate-300 hover:bg-sky-50 dark:hover:bg-slate-800 hover:text-[#0284C7] transition-colors">
+                Syarat & Prosedur Sewa
+            </a>
             <a href="#portfolio" @click="mobileMenu = false"
                class="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-bold text-slate-700 dark:text-slate-300 hover:bg-sky-50 dark:hover:bg-slate-800 hover:text-[#0284C7] transition-colors">
                 Portofolio & Karya
@@ -157,6 +180,10 @@
             <a href="#benchmark" @click="mobileMenu = false"
                class="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-bold text-slate-700 dark:text-slate-300 hover:bg-sky-50 dark:hover:bg-slate-800 hover:text-[#0284C7] transition-colors">
                 Keunggulan Kami
+            </a>
+            <a href="#faq" @click="mobileMenu = false"
+               class="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-bold text-slate-700 dark:text-slate-300 hover:bg-sky-50 dark:hover:bg-slate-800 hover:text-[#0284C7] transition-colors">
+                FAQ (Pertanyaan Umum)
             </a>
             <div class="pt-3 border-t border-slate-200 dark:border-slate-700 flex flex-col gap-2">
                 <a href="#rental" @click="mobileMenu = false"

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A" />
+      <stop offset="100%" stop-color="#1E293B" />
+    </linearGradient>
+    <linearGradient id="brand" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284C7" />
+      <stop offset="100%" stop-color="#38BDF8" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)" />
+
+  <!-- Accent circles -->
+  <circle cx="1100" cy="100" r="300" fill="#0284C7" opacity="0.15" />
+  <circle cx="100" cy="550" r="250" fill="#22C55E" opacity="0.08" />
+
+  <!-- Logo Mark -->
+  <rect x="120" y="140" width="100" height="100" rx="24" fill="url(#brand)" />
+  <text x="170" y="210" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-weight="900" font-size="64" fill="#FFFFFF" text-anchor="middle">D</text>
+
+  <!-- Brand Typography -->
+  <text x="245" y="195" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-weight="900" font-size="52" fill="#FFFFFF" letter-spacing="2">DEZZLY</text>
+  <text x="245" y="235" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-weight="800" font-size="20" fill="#38BDF8" letter-spacing="6">CREATIVE STUDIO</text>
+
+  <!-- Main Headline -->
+  <text x="120" y="340" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-weight="800" font-size="44" fill="#F8FAFC">Jasa Dokumentasi Event, Drone 4K</text>
+  <text x="120" y="395" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-weight="800" font-size="44" fill="#38BDF8">&amp; Persewaan Kamera Sony Alpha</text>
+
+  <!-- Subtitle -->
+  <text x="120" y="460" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-weight="500" font-size="24" fill="#94A3B8">Kualitas Tajam Sensor Full Frame • Pelayanan Ramah &amp; Terpercaya</text>
+
+  <!-- Bottom Badges Strip -->
+  <rect x="120" y="505" width="220" height="46" rx="12" fill="#1E3A8A" opacity="0.8" />
+  <text x="230" y="534" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-weight="700" font-size="16" fill="#93C5FD" text-anchor="middle">Sony Alpha Gear</text>
+
+  <rect x="355" y="505" width="220" height="46" rx="12" fill="#064E3B" opacity="0.8" />
+  <text x="465" y="534" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-weight="700" font-size="16" fill="#86EFAC" text-anchor="middle">Pilot Drone 4K</text>
+
+  <rect x="590" y="505" width="260" height="46" rx="12" fill="#4C1D95" opacity="0.8" />
+  <text x="720" y="534" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-weight="700" font-size="16" fill="#D8B4FE" text-anchor="middle">Sewa 24 Jam Jabodetabek</text>
+
+  <!-- WhatsApp Contact in Banner -->
+  <text x="1080" y="535" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-weight="800" font-size="20" fill="#22C55E" text-anchor="end">WA: 0821-4603-1398</text>
+</svg>

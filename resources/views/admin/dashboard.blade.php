@@ -16,9 +16,18 @@
             <p class="text-sm text-slate-600">Pantau data pesanan sewa kamera dan permintaan jasa dokumentasi acara yang masuk.</p>
         </div>
         <div class="flex items-center gap-3">
-            <a href="{{ route('home') }}" class="px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 border-2 border-slate-300 text-sm font-extrabold text-slate-800 transition-colors">
-                🌐 Lihat Tampilan Website
+            <span class="hidden md:inline-block text-xs font-bold text-slate-500 dark:text-slate-400">
+                Login sebagai: <strong class="text-slate-800 dark:text-slate-200">{{ Auth::user()->name ?? 'Admin' }}</strong>
+            </span>
+            <a href="{{ route('home') }}" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border-2 border-slate-300 dark:border-slate-600 text-xs font-extrabold text-slate-800 dark:text-slate-200 transition-colors">
+                Lihat Website &rarr;
             </a>
+            <form action="{{ route('logout') }}" method="POST" class="inline">
+                @csrf
+                <button type="submit" class="px-4 py-2.5 rounded-xl bg-red-50 hover:bg-red-100 dark:bg-red-900/30 dark:hover:bg-red-900/50 border-2 border-red-300 dark:border-red-700 text-xs font-extrabold text-red-700 dark:text-red-300 transition-colors">
+                    Keluar (Logout)
+                </button>
+            </form>
         </div>
     </div>
 
@@ -106,17 +115,24 @@
                             </span>
                         </td>
                         <td class="p-4 text-right">
-                            <form action="{{ route('admin.orders.update-status', $order) }}" method="POST" class="inline-flex items-center gap-1">
-                                @csrf
-                                @method('PATCH')
-                                <select name="status" onchange="this.form.submit()" class="bg-white border-2 border-slate-300 text-xs font-bold rounded-lg px-2.5 py-1.5 text-slate-800">
-                                    <option value="pending" {{ $order->status === 'pending' ? 'selected' : '' }}>Pending</option>
-                                    <option value="confirmed" {{ $order->status === 'confirmed' ? 'selected' : '' }}>Confirmed</option>
-                                    <option value="active" {{ $order->status === 'active' ? 'selected' : '' }}>Active</option>
-                                    <option value="returned" {{ $order->status === 'returned' ? 'selected' : '' }}>Returned</option>
-                                    <option value="cancelled" {{ $order->status === 'cancelled' ? 'selected' : '' }}>Cancelled</option>
-                                </select>
-                            </form>
+                            <div class="inline-flex items-center gap-1.5">
+                                <a href="{{ route('admin.orders.invoice', $order) }}" target="_blank"
+                                   title="Cetak Nota Invoice"
+                                   class="px-2.5 py-1.5 rounded-lg bg-sky-50 dark:bg-sky-900/30 border border-sky-300 dark:border-sky-700 text-sky-800 dark:text-sky-300 text-xs font-bold hover:bg-sky-100 transition-colors">
+                                    Cetak Nota
+                                </a>
+                                <form action="{{ route('admin.orders.update-status', $order) }}" method="POST" class="inline-flex items-center gap-1">
+                                    @csrf
+                                    @method('PATCH')
+                                    <select name="status" onchange="this.form.submit()" class="bg-white dark:bg-slate-700 border-2 border-slate-300 dark:border-slate-600 text-xs font-bold rounded-lg px-2.5 py-1.5 text-slate-800 dark:text-slate-200">
+                                        <option value="pending" {{ $order->status === 'pending' ? 'selected' : '' }}>Pending</option>
+                                        <option value="confirmed" {{ $order->status === 'confirmed' ? 'selected' : '' }}>Confirmed</option>
+                                        <option value="active" {{ $order->status === 'active' ? 'selected' : '' }}>Active</option>
+                                        <option value="returned" {{ $order->status === 'returned' ? 'selected' : '' }}>Returned</option>
+                                        <option value="cancelled" {{ $order->status === 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                                    </select>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     @empty
