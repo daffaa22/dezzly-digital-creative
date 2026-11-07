@@ -29,6 +29,8 @@ class HomePageTest extends TestCase
         $response->assertSee('DEZZLY');
         $response->assertSee('Dokumentasi');
         $response->assertSee('Paket Menengah');
+        $response->assertSee('Rental Gear Studio');
+        $response->assertSee('Sony A6000');
     }
 
     /**
@@ -115,5 +117,43 @@ class HomePageTest extends TestCase
             'customer_name' => 'Corporate HR Mandiri',
             'package_id' => $package->id,
         ]);
+    }
+
+    /**
+     * Test the exact payload sent by the landing page inquiry forms.
+     */
+    public function test_service_inquiry_from_landing_page_returns_whatsapp_url(): void
+    {
+        $response = $this->postJson('/service/inquiry', [
+            'package_id' => null,
+            'service_type' => 'Konsultasi Dokumentasi',
+            'customer_name' => 'Rian Anggara',
+            'customer_whatsapp' => '08123456789',
+            'company_name' => '',
+            'event_date' => '',
+            'venue_location' => '',
+            'brief_notes' => 'Butuh dokumentasi acara kampus.',
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJson([
+            'success' => true,
+        ]);
+        $response->assertJsonStructure(['success', 'inquiry_code', 'whatsapp_url']);
+        $this->assertStringContainsString('wa.me', $response->json('whatsapp_url'));
+    }
+
+    /**
+     * Test that inquiry fails validation when the service type is missing.
+     */
+    public function test_service_inquiry_requires_service_type(): void
+    {
+        $response = $this->postJson('/service/inquiry', [
+            'customer_name' => 'Rian Anggara',
+            'customer_whatsapp' => '08123456789',
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('service_type');
     }
 }

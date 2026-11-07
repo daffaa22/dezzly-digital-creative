@@ -67,7 +67,7 @@ class ServiceInquiryController extends Controller
         return response()->json([
             'success' => true,
             'inquiry_code' => $inquiryCode,
-            'redirect_url' => $whatsappUrl,
+            'whatsapp_url' => $whatsappUrl,
         ]);
     }
 }

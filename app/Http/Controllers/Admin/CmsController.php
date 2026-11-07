@@ -7,6 +7,7 @@ use App\Models\FaqItem;
 use App\Models\Package;
 use App\Models\PortfolioItem;
 use App\Models\RentalItem;
+use App\Models\RentalOrder;
 use App\Models\SiteSetting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -247,6 +248,18 @@ class CmsController extends Controller
 
     public function deleteRentalItem(RentalItem $item): RedirectResponse
     {
+        $hasActiveOrders = RentalOrder::query()
+            ->where(function ($query) use ($item) {
+                $query->where('rental_item_id', $item->id)
+                    ->orWhere('lens_item_id', $item->id);
+            })
+            ->whereIn('status', ['pending', 'confirmed', 'active'])
+            ->exists();
+
+        if ($hasActiveOrders) {
+            return back()->with('error', 'Unit "'.$item->name.'" masih terhubung dengan pesanan aktif. Selesaikan atau batalkan pesanan tersebut sebelum menghapus unit.');
+        }
+
         $name = $item->name;
         $item->delete();
 

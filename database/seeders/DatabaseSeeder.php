@@ -13,12 +13,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $adminEmail = (string) config('app.admin_email');
+        $adminPassword = config('app.admin_password');
+
+        if (empty($adminPassword)) {
+            if (app()->environment('production')) {
+                throw new \RuntimeException('ADMIN_PASSWORD wajib diisi di environment production sebelum menjalankan seeder.');
+            }
+
+            $adminPassword = 'dezzly123';
+        }
+
         // Admin Account for Dezzly Creative
-        User::firstOrCreate(
-            ['email' => 'admin@dezzlycreative.com'],
+        User::updateOrCreate(
+            ['email' => $adminEmail],
             [
                 'name' => 'Dezzly Admin',
-                'password' => Hash::make('dezzly123'),
+                'password' => Hash::make($adminPassword),
             ]
         );
 

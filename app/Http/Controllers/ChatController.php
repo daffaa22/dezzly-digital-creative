@@ -101,7 +101,7 @@ class ChatController extends Controller
                 'status' => $session->status,
                 'is_deal' => $session->isDeal(),
                 'agreed_price' => $session->agreed_price,
-                'agreed_price_formatted' => $session->agreed_price ? 'Rp '.number_format($session->agreed_price, 0, ',', '.') : null,
+                'agreed_price_formatted' => $session->formattedAgreedPrice(),
                 'whatsapp_deal_url' => $session->isDeal() ? $session->getWhatsAppDealUrl() : null,
                 'deal_at' => $session->deal_at?->format('d/m/Y H:i'),
                 'days_until_prune' => $session->daysUntilPrune(),

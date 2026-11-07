@@ -136,6 +136,7 @@
                 {{-- Public Landing Desktop Nav (100% Focused on Creative Studio) --}}
                 <nav class="hidden md:flex items-center gap-5 lg:gap-7 text-sm font-bold text-slate-700 dark:text-slate-300">
                     <a href="#services" class="hover:text-[#0284C7] dark:hover:text-sky-400 transition-colors py-1">Paket Layanan</a>
+                    <a href="#rental" class="hover:text-[#0284C7] dark:hover:text-sky-400 transition-colors py-1">Sewa Kamera</a>
                     <a href="#portfolio" class="hover:text-[#0284C7] dark:hover:text-sky-400 transition-colors py-1">Portofolio</a>
                     <a href="#workflow" class="hover:text-[#0284C7] dark:hover:text-sky-400 transition-colors py-1">Alur Kerja</a>
                     <a href="#benchmark" class="hover:text-[#0284C7] dark:hover:text-sky-400 transition-colors py-1">Keunggulan</a>
@@ -196,6 +197,10 @@
             <a href="#services" @click="mobileMenu = false"
                class="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-bold text-slate-700 dark:text-slate-300 hover:bg-sky-50 dark:hover:bg-slate-800 hover:text-[#0284C7] transition-colors">
                 Paket Layanan
+            </a>
+            <a href="#rental" @click="mobileMenu = false"
+               class="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-bold text-slate-700 dark:text-slate-300 hover:bg-sky-50 dark:hover:bg-slate-800 hover:text-[#0284C7] transition-colors">
+                Sewa Kamera & Lensa
             </a>
             <a href="#portfolio" @click="mobileMenu = false"
                class="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-bold text-slate-700 dark:text-slate-300 hover:bg-sky-50 dark:hover:bg-slate-800 hover:text-[#0284C7] transition-colors">

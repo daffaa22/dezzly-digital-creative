@@ -61,7 +61,7 @@ class ChatAdminController extends Controller
             ->orderByDesc('id')
             ->take(50)
             ->get()
-            ->map(function ($s) {
+            ->map(function (ChatSession $s) {
                 return [
                     'id' => $s->id,
                     'session_code' => $s->session_code,
@@ -71,7 +71,7 @@ class ChatAdminController extends Controller
                     'status' => $s->status,
                     'is_deal' => $s->isDeal(),
                     'agreed_price' => $s->agreed_price,
-                    'agreed_price_formatted' => $s->agreed_price ? 'Rp '.number_format($s->agreed_price, 0, ',', '.') : null,
+                    'agreed_price_formatted' => $s->formattedAgreedPrice(),
                     'admin_unread_count' => $s->admin_unread_count,
                     'last_message_at' => $s->last_message_at?->diffForHumans(),
                     'days_until_prune' => $s->daysUntilPrune(),
@@ -120,7 +120,7 @@ class ChatAdminController extends Controller
                 'status' => $session->status,
                 'is_deal' => $session->isDeal(),
                 'agreed_price' => $session->agreed_price,
-                'agreed_price_formatted' => $session->agreed_price ? 'Rp '.number_format($session->agreed_price, 0, ',', '.') : null,
+                'agreed_price_formatted' => $session->formattedAgreedPrice(),
                 'event_date' => $session->event_date?->format('Y-m-d'),
                 'venue_location' => $session->venue_location,
                 'deal_notes' => $session->deal_notes,
@@ -184,7 +184,7 @@ class ChatAdminController extends Controller
             'last_message_at' => now(),
         ]);
 
-        $priceFormatted = 'Rp '.number_format($session->agreed_price, 0, ',', '.');
+        $priceFormatted = $session->formattedAgreedPrice() ?? 'Rp 0';
         $dateFormatted = $session->event_date ? $session->event_date->format('d/m/Y') : 'Menyesuaikan';
 
         // Post System Deal Card Message

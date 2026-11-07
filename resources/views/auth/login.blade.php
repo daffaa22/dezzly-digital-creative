@@ -109,13 +109,6 @@
                     </button>
                 </div>
             </form>
-
-            {{-- Kredensial Default Info Box --}}
-            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-600 dark:text-slate-400 space-y-1">
-                <span class="font-extrabold text-slate-800 dark:text-slate-200 block uppercase tracking-wider">Kredensial Bawaan Studio:</span>
-                <p>Email: <code class="font-bold text-[#0284C7] dark:text-sky-400">admin@dezzlycreative.com</code></p>
-                <p>Kata Sandi: <code class="font-bold text-[#0284C7] dark:text-sky-400">dezzly123</code></p>
-            </div>
         </div>
 
         {{-- Back to Home --}}

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\FaqItem;
 use App\Models\Package;
 use App\Models\PortfolioItem;
+use App\Models\RentalItem;
 use App\Models\SiteSetting;
 use Illuminate\Contracts\View\View;
 
@@ -26,6 +27,16 @@ class HomeController extends Controller
 
         $settings = SiteSetting::getAllCached();
 
-        return view('home', compact('packages', 'portfolios', 'faqs', 'settings'));
+        $cameras = RentalItem::where('category', 'camera')
+            ->where('is_available', true)
+            ->orderBy('daily_price', 'asc')
+            ->get();
+
+        $lenses = RentalItem::where('category', 'lens')
+            ->where('is_available', true)
+            ->orderBy('daily_price', 'asc')
+            ->get();
+
+        return view('home', compact('packages', 'portfolios', 'faqs', 'settings', 'cameras', 'lenses'));
     }
 }

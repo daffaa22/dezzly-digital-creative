@@ -57,6 +57,9 @@ return [
     'whatsapp_number' => env('WHATSAPP_NUMBER', '6282146031398'),
     'whatsapp_display' => env('WHATSAPP_DISPLAY', '0821-4603-1398'),
 
+    'admin_email' => env('ADMIN_EMAIL', 'admin@dezzlycreative.com'),
+    'admin_password' => env('ADMIN_PASSWORD'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
@@ -68,7 +71,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => env('APP_TIMEZONE', 'Asia/Jakarta'),
 
     /*
     |--------------------------------------------------------------------------

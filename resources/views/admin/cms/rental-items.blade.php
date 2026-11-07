@@ -96,6 +96,12 @@
     </div>
     @endif
 
+    @if(session('error'))
+    <div class="p-4 rounded-xl bg-red-50 dark:bg-red-900/30 border-2 border-red-300 dark:border-red-700 text-red-900 dark:text-red-300 text-sm font-bold flex items-center justify-between">
+        <span>✕ {{ session('error') }}</span>
+    </div>
+    @endif
+
     {{-- Table 1: Kamera --}}
     <div class="bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden shadow-sm">
         <div class="p-6 border-b-2 border-slate-200 dark:border-slate-700 flex items-center justify-between bg-slate-50 dark:bg-slate-800/90">

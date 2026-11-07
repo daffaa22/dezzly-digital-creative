@@ -400,7 +400,7 @@
                 <button type="submit"
                         :disabled="isSubmittingDeal"
                         class="w-full py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold uppercase tracking-wide shadow-md transition-all cursor-pointer">
-                    <span x-text="isSubmittingDeal ? 'Mengunci Kesepakatan...' : 'Kunci Kesepakatan & Kirim Kartu Deal &rarr;'"></span>
+                    <span x-text="isSubmittingDeal ? 'Mengunci Kesepakatan...' : 'Kunci Kesepakatan & Kirim Kartu Deal →'"></span>
                 </button>
             </form>
 

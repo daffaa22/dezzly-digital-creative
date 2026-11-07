@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('customer_name');
             $table->string('customer_whatsapp');
             $table->string('customer_email')->nullable();
-            $table->foreignId('rental_item_id')->constrained('rental_items')->cascadeOnDelete();
+            $table->foreignId('rental_item_id')->constrained('rental_items')->restrictOnDelete();
             $table->foreignId('lens_item_id')->nullable()->constrained('rental_items')->nullOnDelete();
             $table->date('start_date');
             $table->unsignedSmallInteger('duration_days')->default(1);

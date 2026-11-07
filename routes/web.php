@@ -32,7 +32,7 @@ Route::prefix('chat')->name('chat.')->group(function () {
 
 // Authentication Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:login')->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Protected Admin Dashboard & CMS Routes (Requires Authenticated Session)

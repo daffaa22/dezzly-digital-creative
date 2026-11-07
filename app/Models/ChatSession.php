@@ -2,12 +2,35 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
+/**
+ * @property int $id
+ * @property string $session_code
+ * @property string $session_token
+ * @property string $customer_name
+ * @property string|null $customer_whatsapp
+ * @property int|null $package_id
+ * @property string|null $package_name
+ * @property string|null $initial_notes
+ * @property numeric-string|null $agreed_price
+ * @property Carbon|null $event_date
+ * @property string|null $venue_location
+ * @property string|null $deal_notes
+ * @property Carbon|null $deal_at
+ * @property string $status
+ * @property int $admin_unread_count
+ * @property int $customer_unread_count
+ * @property Carbon|null $last_message_at
+ * @property-read Package|null $package
+ * @property-read Collection<int, ChatMessage> $messages
+ */
 class ChatSession extends Model
 {
     use HasFactory;
@@ -89,6 +112,18 @@ class ChatSession extends Model
     }
 
     /**
+     * Format the agreed price as Indonesian Rupiah.
+     */
+    public function formattedAgreedPrice(): ?string
+    {
+        if ($this->agreed_price === null) {
+            return null;
+        }
+
+        return 'Rp '.number_format((float) $this->agreed_price, 0, ',', '.');
+    }
+
+    /**
      * Days remaining until auto-deletion (policy: 60 days after deal).
      */
     public function daysUntilPrune(): ?int
@@ -115,9 +150,7 @@ class ChatSession extends Model
             $waIntl = $waDigits;
         }
 
-        $priceFormatted = $this->agreed_price
-            ? 'Rp '.number_format($this->agreed_price, 0, ',', '.')
-            : 'Menyesuaikan Diskusi';
+        $priceFormatted = $this->formattedAgreedPrice() ?? 'Menyesuaikan Diskusi';
 
         $eventDateFormatted = $this->event_date
             ? $this->event_date->format('d/m/Y')
@@ -128,7 +161,7 @@ class ChatSession extends Model
             ."• Kode Chat: {$this->session_code}\n"
             ."• Klien: {$this->customer_name}\n"
             ."• No WhatsApp: {$this->customer_whatsapp}\n"
-            .'• Paket: '.($this->package_name ?: ($this->package ? $this->package->name : 'Paket Kustom'))."\n"
+            .'• Paket: '.($this->package_name ?: ($this->package?->name ?: 'Paket Kustom'))."\n"
             ."• Kesepakatan Harga: {$priceFormatted}\n"
             ."• Rencana Tanggal: {$eventDateFormatted}\n"
             .'• Lokasi Acara: '.($this->venue_location ?: 'Menyesuaikan')."\n"

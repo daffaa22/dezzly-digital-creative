@@ -10,11 +10,6 @@ services:
       - "8000:8000"
     volumes:
       - .:/var/www/html
-    environment:
-      - APP_ENV=local
-      - APP_DEBUG=true
-      - APP_URL=http://192.168.18.15:8000
-      - ASSET_URL=
     networks:
       - dezzly_net
 

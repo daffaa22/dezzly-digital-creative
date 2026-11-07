@@ -137,7 +137,7 @@
                     <button type="submit"
                             :disabled="isStarting"
                             class="w-full py-3.5 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 hover:from-sky-400 hover:to-cyan-400 text-slate-950 font-extrabold text-xs uppercase tracking-wider shadow-lg transition-all disabled:opacity-50 cursor-pointer">
-                        <span x-text="isStarting ? 'Menghubungkan...' : 'Mulai Chat Negosiasi &rarr;'"></span>
+                        <span x-text="isStarting ? 'Menghubungkan...' : 'Mulai Chat Negosiasi →'"></span>
                     </button>
                 </form>
 

@@ -327,7 +327,141 @@
     </section>
 
     {{-- ===================================================================
-         SECTION 2: THE STUDIO PRODUCTION METHOD (EDITORIAL TIMELINE)
+         SECTION 2: CAMERA & LENS RENTAL DESK
+    =================================================================== --}}
+    <section id="rental" class="py-20 sm:py-28 bg-[#070A12] text-white border-b border-white/10 relative overflow-hidden">
+        <div class="absolute top-0 right-1/4 w-[420px] h-[420px] rounded-full bg-cyan-500/10 blur-[130px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-14 sm:mb-20 space-y-4 gsap-reveal">
+                <span class="inline-block text-xs font-bold tracking-[0.25em] uppercase text-cyan-400">Rental Gear Studio</span>
+                <h2 class="font-extrabold text-3xl sm:text-4xl lg:text-5xl text-white">
+                    Sewa Kamera & Lensa Sony Alpha
+                </h2>
+                <p class="text-base text-slate-400 font-light leading-relaxed">
+                    Sewa unit kamera dan lensa pilihan studio untuk kebutuhan produksi mandiri Anda. Semua unit dirawat berkala, lengkap dengan baterai cadangan, memory card, dan tas.
+                </p>
+                <div class="inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-white/[0.04] border border-white/10 text-xs sm:text-sm text-slate-300 font-medium">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></span>
+                    Konfirmasi ketersediaan unit langsung via WhatsApp
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start">
+
+                {{-- Camera Catalog --}}
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 gsap-stagger-container">
+                        @foreach($cameras as $camera)
+                        <button type="button"
+                                @click="selectRentalCamera({{ $camera->id }})"
+                                class="text-left rounded-2xl border-2 p-4 sm:p-5 transition-all duration-200 cursor-pointer gsap-stagger-item"
+                                :class="rentalForm.rental_item_id === {{ $camera->id }} ? 'border-cyan-400 bg-cyan-500/10 shadow-[0_0_25px_rgba(34,211,238,0.15)]' : 'border-white/10 bg-white/[0.03] hover:border-white/25'">
+                            <div class="flex items-start justify-between gap-3">
+                                <div>
+                                    <h3 class="font-bold text-lg text-white leading-tight">{{ $camera->name }}</h3>
+                                    <p class="text-[11px] uppercase tracking-widest text-cyan-400 font-bold mt-1">{{ $camera->sensor_type ?? 'Sony Alpha' }} • {{ $camera->mount_type ?? 'E-Mount' }}</p>
+                                </div>
+                                <span class="text-xs font-extrabold px-2.5 py-1 rounded-lg bg-slate-950/60 border border-white/10 text-emerald-400 whitespace-nowrap">{{ $camera->formatted_price }}/hari</span>
+                            </div>
+
+                            @if($camera->description)
+                            <p class="text-xs text-slate-400 font-light leading-relaxed mt-3 line-clamp-2">{{ $camera->description }}</p>
+                            @endif
+
+                            <div class="flex items-center gap-2 mt-3">
+                                @if($camera->requires_fe_lens)
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/15 border border-amber-400/30 text-amber-300">Butuh lensa FE</span>
+                                @else
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-300">Siap pakai</span>
+                                @endif
+                                <span x-show="rentalForm.rental_item_id === {{ $camera->id }}" class="text-[10px] font-bold text-cyan-300">✓ Dipilih</span>
+                            </div>
+                        </button>
+                        @endforeach
+                    </div>
+
+                    <div class="glass-panel rounded-2xl p-5 sm:p-6">
+                        <label class="block text-slate-300 font-semibold text-sm mb-2">Pilih Lensa Tambahan (Opsional):</label>
+                        <select x-model="rentalForm.lens_item_id"
+                                class="w-full bg-[#0B0F19] border border-white/15 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-cyan-400 transition-colors">
+                            <option value="" class="bg-[#0B0F19]">-- Tanpa lensa tambahan --</option>
+                            @foreach($lenses as $lens)
+                            <option value="{{ $lens->id }}" class="bg-[#0B0F19]">{{ $lens->name }} — {{ $lens->formatted_price }}/hari</option>
+                            @endforeach
+                        </select>
+                        <p class="text-[11px] text-slate-500 mt-2">Kamera Full Frame (A7-Series) wajib menggunakan lensa FE. Lensa APS-C tetap kompatibel untuk bodi APS-C.</p>
+                    </div>
+                </div>
+
+                {{-- Booking Summary & Form --}}
+                <div class="glass-panel rounded-3xl p-6 sm:p-8 shadow-2xl lg:sticky lg:top-24">
+                    <h3 class="font-bold text-xl text-white font-serif italic">Ringkasan Sewa</h3>
+                    <p class="text-xs text-slate-400 mt-1">Estimasi biaya dihitung otomatis.</p>
+
+                    <div class="mt-5 space-y-3 text-sm">
+                        <div class="flex items-start justify-between gap-3">
+                            <span class="text-slate-400">Kamera</span>
+                            <span class="font-bold text-white text-right" x-text="selectedCamera ? selectedCamera.name : 'Belum dipilih'"></span>
+                        </div>
+                        <div class="flex items-start justify-between gap-3">
+                            <span class="text-slate-400">Lensa</span>
+                            <span class="font-bold text-white text-right" x-text="selectedLens ? selectedLens.name : 'Tanpa lensa'"></span>
+                        </div>
+                        <div class="flex items-center justify-between gap-3">
+                            <span class="text-slate-400">Harga / hari</span>
+                            <span class="font-bold text-cyan-400" x-text="formatRupiah(rentalDailyTotal)"></span>
+                        </div>
+                        <div class="flex items-center justify-between gap-3 pt-3 border-t border-white/10">
+                            <span class="text-slate-300 font-semibold">Estimasi Total</span>
+                            <span class="font-extrabold text-xl text-emerald-400" x-text="formatRupiah(rentalGrandTotal)"></span>
+                        </div>
+                    </div>
+
+                    <form @submit.prevent="submitRentalOrder()" class="mt-6 space-y-4">
+                        <div>
+                            <label class="block text-slate-300 font-semibold text-xs mb-1.5">Tanggal Mulai Sewa:</label>
+                            <input type="date" x-model="rentalForm.start_date" required
+                                   class="w-full bg-white/[0.04] border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400 transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-slate-300 font-semibold text-xs mb-1.5">Durasi (hari):</label>
+                            <input type="number" min="1" max="30" x-model.number="rentalForm.duration_days" required
+                                   class="w-full bg-white/[0.04] border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400 transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-slate-300 font-semibold text-xs mb-1.5">Nama Lengkap:</label>
+                            <input type="text" x-model="rentalForm.customer_name" required
+                                   placeholder="Nama penyewa"
+                                   class="w-full bg-white/[0.04] border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-slate-300 font-semibold text-xs mb-1.5">Nomor WhatsApp:</label>
+                            <input type="text" x-model="rentalForm.customer_whatsapp" required
+                                   placeholder="0812xxxxxxx"
+                                   class="w-full bg-white/[0.04] border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-slate-300 font-semibold text-xs mb-1.5">Catatan (Opsional):</label>
+                            <textarea x-model="rentalForm.notes" rows="2"
+                                      placeholder="Kebutuhan khusus atau lokasi pengambilan unit"
+                                      class="w-full bg-white/[0.04] border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors"></textarea>
+                        </div>
+
+                        <button type="submit"
+                                :disabled="isSubmittingRental"
+                                class="w-full py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-extrabold text-sm uppercase tracking-widest shadow-[0_0_25px_rgba(16,185,129,0.3)] transition-all hover:scale-[1.01] active:scale-[0.98] disabled:opacity-50 cursor-pointer">
+                            <span x-text="isSubmittingRental ? 'Memproses Booking...' : 'Booking via WhatsApp →'"></span>
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    {{-- ===================================================================
+         SECTION 2B: THE STUDIO PRODUCTION METHOD (EDITORIAL TIMELINE)
     =================================================================== --}}
     <section id="workflow" class="py-20 sm:py-28 bg-[#070A12] text-white border-b border-white/10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -582,7 +716,7 @@
                     <button type="submit"
                             :disabled="isSubmitting"
                             class="w-full py-4 rounded-xl bg-gradient-to-r from-sky-500 via-cyan-500 to-sky-600 hover:from-sky-400 hover:to-cyan-400 text-slate-950 font-extrabold text-sm uppercase tracking-widest shadow-[0_0_25px_rgba(56,189,248,0.35)] transition-all hover:scale-[1.01] active:scale-[0.98] disabled:opacity-50 cursor-pointer">
-                        <span x-text="isSubmitting ? 'Mengirim Data...' : 'Kirim Konsultasi ke WhatsApp Dezzly Studio &rarr;'"></span>
+                        <span x-text="isSubmitting ? 'Mengirim Data...' : 'Kirim Konsultasi ke WhatsApp Dezzly Studio →'"></span>
                     </button>
                 </form>
             </div>
@@ -724,6 +858,88 @@ function dezzlyApp() {
         isSubmitting: false,
         isInquiryModalOpen: false,
 
+        cameras: {{ \Illuminate\Support\Js::from($cameras) }},
+        lenses: {{ \Illuminate\Support\Js::from($lenses) }},
+
+        rentalForm: {
+            rental_item_id: null,
+            lens_item_id: '',
+            start_date: '',
+            duration_days: 1,
+            customer_name: '',
+            customer_whatsapp: '',
+            notes: ''
+        },
+        isSubmittingRental: false,
+
+        get selectedCamera() {
+            return this.cameras.find(camera => camera.id === this.rentalForm.rental_item_id) || null;
+        },
+
+        get selectedLens() {
+            return this.lenses.find(lens => lens.id === parseInt(this.rentalForm.lens_item_id, 10)) || null;
+        },
+
+        get rentalDailyTotal() {
+            const cameraPrice = this.selectedCamera ? this.selectedCamera.daily_price : 0;
+            const lensPrice = this.selectedLens ? this.selectedLens.daily_price : 0;
+            return cameraPrice + lensPrice;
+        },
+
+        get rentalGrandTotal() {
+            const days = parseInt(this.rentalForm.duration_days, 10) || 1;
+            return this.rentalDailyTotal * days;
+        },
+
+        formatRupiah(value) {
+            return 'Rp ' + new Intl.NumberFormat('id-ID').format(value || 0);
+        },
+
+        selectRentalCamera(cameraId) {
+            this.rentalForm.rental_item_id = cameraId;
+        },
+
+        async submitRentalOrder() {
+            if (!this.rentalForm.rental_item_id) {
+                alert('Silakan pilih unit kamera terlebih dahulu.');
+                return;
+            }
+
+            this.isSubmittingRental = true;
+            try {
+                const response = await fetch('{{ route('rental.order') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        rental_item_id: this.rentalForm.rental_item_id,
+                        lens_item_id: this.rentalForm.lens_item_id || null,
+                        start_date: this.rentalForm.start_date,
+                        duration_days: this.rentalForm.duration_days,
+                        customer_name: this.rentalForm.customer_name,
+                        customer_whatsapp: this.rentalForm.customer_whatsapp,
+                        notes: this.rentalForm.notes
+                    })
+                });
+                const data = await response.json();
+                if (!response.ok) {
+                    const firstError = data.errors ? Object.values(data.errors)[0][0] : (data.message || 'Terjadi kesalahan pada data yang dikirim.');
+                    alert(firstError);
+                    return;
+                }
+                if (data.whatsapp_url) {
+                    window.open(data.whatsapp_url, '_blank');
+                    this.rentalForm = { rental_item_id: null, lens_item_id: '', start_date: '', duration_days: 1, customer_name: '', customer_whatsapp: '', notes: '' };
+                }
+            } catch (e) {
+                alert('Terjadi kesalahan koneksi. Silakan coba lagi.');
+            } finally {
+                this.isSubmittingRental = false;
+            }
+        },
+
         inquiryTarget: {
             packageId: null,
             packageName: ''
@@ -766,6 +982,7 @@ function dezzlyApp() {
                     },
                     body: JSON.stringify({
                         package_id: this.inquiryTarget.packageId,
+                        service_type: this.inquiryTarget.packageName || 'Konsultasi Paket',
                         customer_name: this.modalForm.customer_name,
                         customer_whatsapp: this.modalForm.customer_whatsapp,
                         company_name: this.modalForm.company_name,
@@ -775,6 +992,11 @@ function dezzlyApp() {
                     })
                 });
                 const data = await response.json();
+                if (!response.ok) {
+                    const firstError = data.errors ? Object.values(data.errors)[0][0] : (data.message || 'Terjadi kesalahan pada data yang dikirim.');
+                    alert(firstError);
+                    return;
+                }
                 if (data.whatsapp_url) {
                     window.open(data.whatsapp_url, '_blank');
                     this.isInquiryModalOpen = false;
@@ -798,6 +1020,7 @@ function dezzlyApp() {
                     },
                     body: JSON.stringify({
                         package_id: this.directForm.package_id || null,
+                        service_type: 'Konsultasi Dokumentasi',
                         customer_name: this.directForm.customer_name,
                         customer_whatsapp: this.directForm.customer_whatsapp,
                         company_name: this.directForm.company_name,
@@ -807,6 +1030,11 @@ function dezzlyApp() {
                     })
                 });
                 const data = await response.json();
+                if (!response.ok) {
+                    const firstError = data.errors ? Object.values(data.errors)[0][0] : (data.message || 'Terjadi kesalahan pada data yang dikirim.');
+                    alert(firstError);
+                    return;
+                }
                 if (data.whatsapp_url) {
                     window.open(data.whatsapp_url, '_blank');
                     this.directForm = { customer_name: '', customer_whatsapp: '', company_name: '', package_id: '', event_date: '', venue_location: '', brief_notes: '' };
