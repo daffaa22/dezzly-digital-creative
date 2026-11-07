@@ -27,7 +27,7 @@ class HomePageTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('DEZZLY');
-        $response->assertSee('Sony A6000');
+        $response->assertSee('Dokumentasi');
         $response->assertSee('Paket Menengah');
     }
 

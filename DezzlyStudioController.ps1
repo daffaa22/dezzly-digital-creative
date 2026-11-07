@@ -40,8 +40,8 @@ $xaml = @"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="DEZZLY CREATIVE - Panel Kendali Server, Jaringan &amp; Deployment"
-        Height="920" Width="1140"
-        MinHeight="780" MinWidth="980"
+        Height="930" Width="1160"
+        MinHeight="800" MinWidth="1000"
         WindowStartupLocation="CenterScreen"
         Background="#F1F5F9" Foreground="#0F172A"
         FontFamily="Segoe UI">
@@ -114,11 +114,11 @@ $xaml = @"
                         </StackPanel>
                     </Border>
 
-                    <!-- Docker Badge -->
-                    <Border Name="DockerBadge" Background="#FFF7ED" BorderBrush="#F97316" BorderThickness="2" CornerRadius="8" Padding="12,6" Margin="0,0,8,0">
+                    <!-- Docker Badge (Klik untuk cek/buka) -->
+                    <Border Name="DockerBadge" Background="#FFF7ED" BorderBrush="#F97316" BorderThickness="2" CornerRadius="8" Padding="12,6" Margin="0,0,8,0" Cursor="Hand" ToolTip="Status Docker Engine Windows. Klik untuk refresh / buka Docker.">
                         <StackPanel Orientation="Horizontal">
                             <Ellipse Name="DockerDot" Width="10" Height="10" Fill="#F97316" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                            <TextBlock Name="DockerStatusText" Text="DOCKER..." Foreground="#C2410C" FontSize="11" FontWeight="Bold" VerticalAlignment="Center"/>
+                            <TextBlock Name="DockerStatusText" Text="MEMERIKSA DOCKER..." Foreground="#C2410C" FontSize="11" FontWeight="Bold" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Border>
 
@@ -170,39 +170,51 @@ $xaml = @"
             </Grid>
         </Border>
 
-        <!-- ROW 2: KONTROL SERVER LOCAL -->
+        <!-- ROW 2: KONTROL SERVER (DUAL ENGINE: DOCKER / PHP NATIVE / LOCALHOST) -->
         <Border Grid.Row="2" Background="#FFFFFF" BorderBrush="#CBD5E1" BorderThickness="2" CornerRadius="12" Padding="14" Margin="0,0,0,12">
             <StackPanel>
                 <Grid Margin="0,0,0,8">
-                    <TextBlock Text="1. KONTROL SERVER (DOCKER / LOCALHOST)" Foreground="#1E293B" FontSize="12.5" FontWeight="ExtraBold"/>
-                    <TextBlock Text="Lokal: http://localhost:8000" Foreground="#64748B" FontSize="11.5" HorizontalAlignment="Right"/>
+                    <TextBlock Text="1. KONTROL SERVER (DUAL ENGINE: DOCKER / PHP ARTISAN / PORT 8000)" Foreground="#1E293B" FontSize="12.5" FontWeight="ExtraBold"/>
+                    <TextBlock Text="Akses Lokal: http://localhost:8000" Foreground="#64748B" FontSize="11.5" HorizontalAlignment="Right"/>
                 </Grid>
-                <UniformGrid Columns="4" Rows="1">
+                <UniformGrid Columns="5" Rows="1">
+                    <!-- 1. Nyalakan Docker -->
                     <Button Name="BtnDockerUp" Margin="3" Background="#15803D" BorderBrush="#166534" Foreground="#FFFFFF">
                         <StackPanel>
-                            <TextBlock Text="[ NYALAKAN SERVER ]" FontSize="13" FontWeight="ExtraBold" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Docker Container (Port 8000)" FontSize="11" HorizontalAlignment="Center"/>
+                            <TextBlock Name="TxtDockerUpTitle" Text="[ NYALAKAN DOCKER ]" FontSize="12" FontWeight="ExtraBold" HorizontalAlignment="Center"/>
+                            <TextBlock Name="TxtDockerUpSub" Text="Container (Port 8000)" FontSize="10" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
 
+                    <!-- 2. Nyalakan PHP Serve Native (Cepat tanpa Docker) -->
+                    <Button Name="BtnPhpServe" Margin="3" Background="#059669" BorderBrush="#047857" Foreground="#FFFFFF">
+                        <StackPanel>
+                            <TextBlock Name="TxtPhpServeTitle" Text="[ NYALAKAN PHP SERVE ]" FontSize="12" FontWeight="ExtraBold" HorizontalAlignment="Center"/>
+                            <TextBlock Name="TxtPhpServeSub" Text="Artisan (Tanpa Docker)" FontSize="10" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!-- 3. Matikan Server -->
                     <Button Name="BtnDockerDown" Margin="3" Background="#FEF2F2" BorderBrush="#DC2626" Foreground="#B91C1C">
                         <StackPanel>
-                            <TextBlock Text="[ MATIKAN SERVER ]" FontSize="13" FontWeight="ExtraBold" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Hentikan Proses Docker" FontSize="11" HorizontalAlignment="Center"/>
+                            <TextBlock Name="TxtDockerDownTitle" Text="[ MATIKAN SERVER ]" FontSize="12" FontWeight="ExtraBold" HorizontalAlignment="Center"/>
+                            <TextBlock Name="TxtDockerDownSub" Text="Stop Docker &amp; PHP" FontSize="10" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
 
+                    <!-- 4. Buka Website Pengunjung -->
                     <Button Name="BtnOpenBrowser" Margin="3" Background="#0284C7" BorderBrush="#0369A1" Foreground="#FFFFFF">
                         <StackPanel>
-                            <TextBlock Text="[ BUKA WEBSITE ]" FontSize="13" FontWeight="ExtraBold" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Halaman Pengunjung" FontSize="11" HorizontalAlignment="Center"/>
+                            <TextBlock Text="[ BUKA WEBSITE ]" FontSize="12" FontWeight="ExtraBold" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Halaman Pengunjung" FontSize="10" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
 
+                    <!-- 5. Buka Admin Dashboard -->
                     <Button Name="BtnOpenAdmin" Margin="3" Background="#7C3AED" BorderBrush="#6D28D9" Foreground="#FFFFFF">
                         <StackPanel>
-                            <TextBlock Text="[ ADMIN DASHBOARD ]" FontSize="13" FontWeight="ExtraBold" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Kelola Pesanan &amp; Kamera" FontSize="11" HorizontalAlignment="Center"/>
+                            <TextBlock Text="[ ADMIN DASHBOARD ]" FontSize="12" FontWeight="ExtraBold" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Kelola Pesanan &amp; CMS" FontSize="10" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                 </UniformGrid>
@@ -321,7 +333,7 @@ $xaml = @"
 
         <!-- ROW 6: FOOTER -->
         <Grid Grid.Row="6" Margin="0,8,0,0">
-            <TextBlock Text="Dezzly Creative Platform  |  Arsitektur Dua Cabang (Dev vs Production)  |  Laravel 13 + Docker"
+            <TextBlock Text="Dezzly Creative Platform  |  Arsitektur Dua Cabang (Dev vs Production)  |  Dual Engine (Docker / PHP Native)"
                        Foreground="#64748B" FontSize="11.5" VerticalAlignment="Center" FontWeight="SemiBold"/>
             <TextBlock Text="Remote GitHub: daffaa22/dezzly-digital-creative"
                        Foreground="#0284C7" FontSize="11.5" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold"/>
@@ -335,39 +347,89 @@ $xmlReader    = [System.Xml.XmlReader]::Create($stringReader)
 $window       = [Windows.Markup.XamlReader]::Load($xmlReader)
 
 # Mapping Controls
-$btnDockerUp      = $window.FindName("BtnDockerUp")
-$btnDockerDown    = $window.FindName("BtnDockerDown")
-$btnOpenBrowser   = $window.FindName("BtnOpenBrowser")
-$btnOpenAdmin     = $window.FindName("BtnOpenAdmin")
-$btnCopyLanUrl    = $window.FindName("BtnCopyLanUrl")
-$btnOpenFirewall  = $window.FindName("BtnOpenFirewall")
-$btnDeployDev     = $window.FindName("BtnDeployDev")
-$btnDeployProd    = $window.FindName("BtnDeployProd")
-$btnSwitchDev     = $window.FindName("BtnSwitchDev")
-$btnSwitchProd    = $window.FindName("BtnSwitchProd")
-$btnMigrateSeed   = $window.FindName("BtnMigrateSeed")
-$btnBuildProd     = $window.FindName("BtnBuildProd")
-$btnClearCache    = $window.FindName("BtnClearCache")
-$btnRunTests      = $window.FindName("BtnRunTests")
-$btnGitStatus     = $window.FindName("BtnGitStatus")
-$btnClearLog      = $window.FindName("BtnClearLog")
-$logBox           = $window.FindName("LogBox")
-$serverDot        = $window.FindName("ServerDot")
-$serverStatusText = $window.FindName("ServerStatusText")
-$serverBadge      = $window.FindName("ServerBadge")
-$dockerDot        = $window.FindName("DockerDot")
-$dockerStatusText = $window.FindName("DockerStatusText")
-$dockerBadge      = $window.FindName("DockerBadge")
-$branchBadge      = $window.FindName("BranchBadge")
-$branchText       = $window.FindName("BranchText")
-$lanIpText        = $window.FindName("LanIpText")
-$lanUrlText       = $window.FindName("LanUrlText")
+$btnDockerUp        = $window.FindName("BtnDockerUp")
+$btnPhpServe        = $window.FindName("BtnPhpServe")
+$btnDockerDown      = $window.FindName("BtnDockerDown")
+$btnOpenBrowser     = $window.FindName("BtnOpenBrowser")
+$btnOpenAdmin       = $window.FindName("BtnOpenAdmin")
+$btnCopyLanUrl      = $window.FindName("BtnCopyLanUrl")
+$btnOpenFirewall    = $window.FindName("BtnOpenFirewall")
+$btnDeployDev       = $window.FindName("BtnDeployDev")
+$btnDeployProd      = $window.FindName("BtnDeployProd")
+$btnSwitchDev       = $window.FindName("BtnSwitchDev")
+$btnSwitchProd      = $window.FindName("BtnSwitchProd")
+$btnMigrateSeed     = $window.FindName("BtnMigrateSeed")
+$btnBuildProd       = $window.FindName("BtnBuildProd")
+$btnClearCache      = $window.FindName("BtnClearCache")
+$btnRunTests        = $window.FindName("BtnRunTests")
+$btnGitStatus       = $window.FindName("BtnGitStatus")
+$btnClearLog        = $window.FindName("BtnClearLog")
+$logBox             = $window.FindName("LogBox")
+$serverDot          = $window.FindName("ServerDot")
+$serverStatusText   = $window.FindName("ServerStatusText")
+$serverBadge        = $window.FindName("ServerBadge")
+$dockerDot          = $window.FindName("DockerDot")
+$dockerStatusText   = $window.FindName("DockerStatusText")
+$dockerBadge        = $window.FindName("DockerBadge")
+$branchBadge        = $window.FindName("BranchBadge")
+$branchText         = $window.FindName("BranchText")
+$lanIpText          = $window.FindName("LanIpText")
+$lanUrlText         = $window.FindName("LanUrlText")
+$txtDockerUpTitle   = $window.FindName("TxtDockerUpTitle")
+$txtDockerUpSub     = $window.FindName("TxtDockerUpSub")
+$txtPhpServeTitle   = $window.FindName("TxtPhpServeTitle")
+$txtPhpServeSub     = $window.FindName("TxtPhpServeSub")
+$txtDockerDownTitle = $window.FindName("TxtDockerDownTitle")
+$txtDockerDownSub   = $window.FindName("TxtDockerDownSub")
 
 # Helper Log
 function Write-GuiLog([string]$message, [string]$type = "INFO") {
     $timestamp = Get-Date -Format "HH:mm:ss"
     $logBox.AppendText("[$timestamp] [$type] $message`r`n")
     $logBox.ScrollToEnd()
+}
+
+# Helper: Cek Port 8000 Super Cepat & Non-Blocking (<400ms)
+function Test-PortFast([int]$port = 8000) {
+    $tcp = New-Object System.Net.Sockets.TcpClient
+    try {
+        $iar = $tcp.BeginConnect("127.0.0.1", $port, $null, $null)
+        $wait = $iar.AsyncWaitHandle.WaitOne(400, $false)
+        if ($wait -and $tcp.Connected) {
+            $tcp.EndConnect($iar)
+            return $true
+        }
+        return $false
+    } catch {
+        return $false
+    } finally {
+        $tcp.Close()
+    }
+}
+
+# Helper: Cek Docker Daemon Engine Asli (Bukan sekadar docker.exe)
+function Test-DockerDaemonFast {
+    if (-not (Get-Command "docker" -ErrorAction SilentlyContinue)) {
+        return $false
+    }
+    try {
+        $pinfo = New-Object System.Diagnostics.ProcessStartInfo
+        $pinfo.FileName = "docker"
+        $pinfo.Arguments = "info --format '{{.ServerVersion}}'"
+        $pinfo.RedirectStandardOutput = $true
+        $pinfo.RedirectStandardError = $true
+        $pinfo.UseShellExecute = $false
+        $pinfo.CreateNoWindow = $true
+        $p = [System.Diagnostics.Process]::Start($pinfo)
+        $exited = $p.WaitForExit(1200)
+        if (-not $exited) {
+            $p.Kill()
+            return $false
+        }
+        return ($p.ExitCode -eq 0)
+    } catch {
+        return $false
+    }
 }
 
 # Update Tampilan Branch
@@ -385,20 +447,85 @@ function Update-BranchBadge {
     }
 }
 
-# Update Tampilan Server
-function Update-ServerStatus([bool]$isRunning) {
+# Update Status Docker Badge
+function Update-DockerBadge {
+    $hasDockerCli = Get-Command "docker" -ErrorAction SilentlyContinue
+    if (-not $hasDockerCli) {
+        $dockerDot.Fill            = [System.Windows.Media.Brushes]::SlateGray
+        $dockerStatusText.Text     = "DOCKER TIDAK TERPASANG"
+        $dockerStatusText.Foreground = [System.Windows.Media.Brushes]::DimGray
+        $dockerBadge.Background    = [System.Windows.Media.Brushes]::WhiteSmoke
+        $dockerBadge.BorderBrush   = [System.Windows.Media.Brushes]::LightGray
+        return $false
+    }
+
+    $daemonUp = Test-DockerDaemonFast
+    if ($daemonUp) {
+        $dockerDot.Fill            = [System.Windows.Media.Brushes]::ForestGreen
+        $dockerStatusText.Text     = "DOCKER ENGINE AKTIF"
+        $dockerStatusText.Foreground = [System.Windows.Media.Brushes]::DarkGreen
+        $dockerBadge.Background    = [System.Windows.Media.Brushes]::Honeydew
+        $dockerBadge.BorderBrush   = [System.Windows.Media.Brushes]::SeaGreen
+        return $true
+    } else {
+        $dockerDot.Fill            = [System.Windows.Media.Brushes]::DarkOrange
+        $dockerStatusText.Text     = "DOCKER ENGINE BELUM JALAN"
+        $dockerStatusText.Foreground = [System.Windows.Media.Brushes]::DarkGoldenrod
+        $dockerBadge.Background    = [System.Windows.Media.Brushes]::Cornsilk
+        $dockerBadge.BorderBrush   = [System.Windows.Media.Brushes]::BurlyWood
+        return $false
+    }
+}
+
+# Update Tampilan Server & State Tombol secara UX Interaktif
+function Update-ServerStatus([bool]$isRunning, [string]$source = "") {
     if ($isRunning) {
         $serverDot.Fill              = [System.Windows.Media.Brushes]::ForestGreen
-        $serverStatusText.Text       = "SERVER AKTIF (PORT 8000)"
+        if ($source -ne "") {
+            $serverStatusText.Text   = "SERVER AKTIF ($source | PORT 8000)"
+        } else {
+            $serverStatusText.Text   = "SERVER AKTIF (PORT 8000)"
+        }
         $serverStatusText.Foreground = [System.Windows.Media.Brushes]::DarkGreen
         $serverBadge.Background      = [System.Windows.Media.Brushes]::Honeydew
         $serverBadge.BorderBrush     = [System.Windows.Media.Brushes]::SeaGreen
+
+        # Visual Tombol Saat Server Aktif
+        $btnDockerDown.IsEnabled     = $true
+        $btnDockerDown.Opacity       = 1.0
+        $txtDockerDownTitle.Text     = "[ MATIKAN SERVER ]"
+
+        $btnOpenBrowser.IsEnabled    = $true
+        $btnOpenBrowser.Opacity      = 1.0
+        $btnOpenAdmin.IsEnabled      = $true
+        $btnOpenAdmin.Opacity        = 1.0
+
+        $btnDockerUp.Opacity         = 0.75
+        $btnPhpServe.Opacity         = 0.75
     } else {
         $serverDot.Fill              = [System.Windows.Media.Brushes]::Crimson
         $serverStatusText.Text       = "SERVER OFFLINE"
         $serverStatusText.Foreground = [System.Windows.Media.Brushes]::DarkRed
         $serverBadge.Background      = [System.Windows.Media.Brushes]::MistyRose
         $serverBadge.BorderBrush     = [System.Windows.Media.Brushes]::LightCoral
+
+        # Visual Tombol Saat Server Mati
+        $btnDockerUp.IsEnabled       = $true
+        $btnDockerUp.Opacity         = 1.0
+        $txtDockerUpTitle.Text       = "[ NYALAKAN DOCKER ]"
+        $txtDockerUpSub.Text         = "Container (Port 8000)"
+
+        $btnPhpServe.IsEnabled       = $true
+        $btnPhpServe.Opacity         = 1.0
+        $txtPhpServeTitle.Text       = "[ NYALAKAN PHP SERVE ]"
+        $txtPhpServeSub.Text         = "Artisan (Tanpa Docker)"
+
+        $btnDockerDown.IsEnabled     = $false
+        $btnDockerDown.Opacity       = 0.5
+        $txtDockerDownTitle.Text     = "[ SERVER OFF ]"
+
+        $btnOpenBrowser.Opacity      = 0.8
+        $btnOpenAdmin.Opacity        = 0.8
     }
 }
 
@@ -406,6 +533,9 @@ function Update-ServerStatus([bool]$isRunning) {
 $lanIpText.Text  = $lanIp
 $lanUrlText.Text = $baseUrl
 Update-BranchBadge
+$initDocker = Update-DockerBadge
+$initPort   = Test-PortFast 8000
+Update-ServerStatus $initPort
 
 # Initial Logs
 Write-GuiLog "Dezzly Studio Controller aktif." "SISTEM"
@@ -413,25 +543,57 @@ Write-GuiLog "Folder Proyek: $projectRoot" "INFO"
 Write-GuiLog "IP LAN Utama (Wi-Fi): $lanIp" "JARINGAN"
 Write-GuiLog "Link Akses untuk Perangkat Lain: $baseUrl" "JARINGAN"
 Write-GuiLog "Branch Git Aktif: $(Get-CurrentGitBranch)" "GIT"
-
-# Cek Docker
-$hasDocker = Get-Command "docker" -ErrorAction SilentlyContinue
-if ($hasDocker) {
-    $dockerDot.Fill            = [System.Windows.Media.Brushes]::ForestGreen
-    $dockerStatusText.Text     = "DOCKER AKTIF"
-    $dockerStatusText.Foreground = [System.Windows.Media.Brushes]::DarkGreen
-    $dockerBadge.Background    = [System.Windows.Media.Brushes]::Honeydew
-    $dockerBadge.BorderBrush   = [System.Windows.Media.Brushes]::SeaGreen
+if ($initDocker) {
+    Write-GuiLog "Engine Docker Desktop terdeteksi AKTIF." "DOCKER"
 } else {
-    $dockerDot.Fill            = [System.Windows.Media.Brushes]::OrangeRed
-    $dockerStatusText.Text     = "DOCKER BELUM AKTIF"
-    $dockerStatusText.Foreground = [System.Windows.Media.Brushes]::OrangeRed
-    Write-GuiLog "Aplikasi Docker Desktop belum aktif di sistem Windows." "PERHATIAN"
+    Write-GuiLog "Engine Docker Desktop belum aktif. Anda bisa menggunakan 'NYALAKAN PHP SERVE' atau buka Docker Desktop." "INFO"
 }
+if ($initPort) {
+    Write-GuiLog "Port 8000 terdeteksi SUDAH AKTIF melayani koneksi." "SERVER"
+} else {
+    Write-GuiLog "Port 8000 siap dinyalakan." "SERVER"
+}
+
+# -----------------------------------------------------------------------
+# DISPATCHER TIMER: Real-time Background Polling (Setiap 3 Detik)
+# Menjamin UX Tombol & Badge Selalu Sinkron 100% dengan Kondisi Nyata
+# -----------------------------------------------------------------------
+$timer = New-Object System.Windows.Threading.DispatcherTimer
+$timer.Interval = [TimeSpan]::FromSeconds(3)
+$timer.Add_Tick({
+    $isListening = Test-PortFast 8000
+    Update-ServerStatus $isListening
+})
+$timer.Start()
 
 # -----------------------------------------------------------------------
 # EVENT HANDLERS
 # -----------------------------------------------------------------------
+
+# Klik Badge Docker: Re-check atau Buka Docker Desktop
+$dockerBadge.Add_MouseLeftButtonUp({
+    $isUp = Update-DockerBadge
+    if ($isUp) {
+        Write-GuiLog "Engine Docker Desktop aktif dan siap digunakan." "DOCKER"
+        [System.Windows.MessageBox]::Show("Engine Docker Desktop AKTIF dan siap menjalankan container.", "Status Docker", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Information) | Out-Null
+    } else {
+        $ask = [System.Windows.MessageBox]::Show(
+            "Engine Docker Desktop belum berjalan.`n`nApakah Anda ingin membuka aplikasi Docker Desktop sekarang di Windows?",
+            "Buka Docker Desktop",
+            [System.Windows.MessageBoxButton]::YesNo,
+            [System.Windows.MessageBoxImage]::Question
+        )
+        if ($ask -eq [System.Windows.MessageBoxResult]::Yes) {
+            $dockerApp = "C:\Program Files\Docker\Docker\Docker Desktop.exe"
+            if (Test-Path $dockerApp) {
+                Start-Process $dockerApp
+                Write-GuiLog "Membuka aplikasi Docker Desktop... Harap tunggu engine siap." "DOCKER"
+            } else {
+                Write-GuiLog "File Docker Desktop.exe tidak ditemukan di direktori standar." "PERINGATAN"
+            }
+        }
+    }
+})
 
 # Salin Link LAN ke Clipboard
 $btnCopyLanUrl.Add_Click({
@@ -453,30 +615,156 @@ $btnOpenFirewall.Add_Click({
     }
 })
 
-# Server: Nyalakan Docker
+# -----------------------------------------------------------------------
+# ENGINE 1: NYALAKAN VIA DOCKER (DENGAN SMART FALLBACK UX)
+# -----------------------------------------------------------------------
 $btnDockerUp.Add_Click({
-    if (-not (Get-Command "docker" -ErrorAction SilentlyContinue)) {
-        Write-GuiLog "Docker belum terdeteksi. Buka Docker Desktop terlebih dahulu." "PERHATIAN"
-        [System.Windows.MessageBox]::Show("Silakan buka aplikasi Docker Desktop di komputer Anda terlebih dahulu.", "Docker Belum Aktif", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Warning) | Out-Null
+    # Cek apakah port sudah aktif
+    if (Test-PortFast 8000) {
+        Write-GuiLog "Server sudah aktif di port 8000! Anda bisa langsung membuka website." "INFO"
+        Update-ServerStatus $true
         return
     }
-    Write-GuiLog "Menyalakan container Docker..." "PROSES"
+
+    $txtDockerUpTitle.Text = "[ MEMULAI... ]"
+    $txtDockerUpSub.Text   = "Memeriksa Engine..."
+    [System.Windows.Forms.Application]::DoEvents()
+
+    # Cek Docker Engine Sebenarnya
+    $daemonReady = Test-DockerDaemonFast
+
+    if (-not $daemonReady) {
+        Update-DockerBadge
+        $txtDockerUpTitle.Text = "[ NYALAKAN DOCKER ]"
+        $txtDockerUpSub.Text   = "Container (Port 8000)"
+        Write-GuiLog "Docker Engine belum berjalan di komputer ini." "PERHATIAN"
+
+        # Dialog Pilihan UX yang Sangat Membantu User
+        $choice = [System.Windows.MessageBox]::Show(
+            "Engine Docker Desktop belum aktif di komputer Anda.`n`nPILIHAN CEPAT:`n• Klik 'Yes' untuk menjalankan SERVER CEPAT PHP (Port 8000) langsung tanpa Docker.`n• Klik 'No' untuk membuka aplikasi Docker Desktop.`n• Klik 'Cancel' untuk membatalkan.",
+            "Docker Engine Belum Aktif",
+            [System.Windows.MessageBoxButton]::YesNoCancel,
+            [System.Windows.MessageBoxImage]::Question
+        )
+
+        if ($choice -eq [System.Windows.MessageBoxResult]::Yes) {
+            # Jalankan Mode PHP Built-in
+            Write-GuiLog "Menjalankan Server PHP Built-in di port 8000 (Mode Ringan)..." "PROSES"
+            Start-Process -FilePath "php" -ArgumentList "artisan serve --host=0.0.0.0 --port=8000" -WorkingDirectory $projectRoot -WindowStyle Hidden
+            Start-Sleep -Milliseconds 1200
+            if (Test-PortFast 8000) {
+                Update-ServerStatus $true "PHP"
+                Write-GuiLog "SUKSES: Server PHP aktif di $baseUrl (Lokal & Wi-Fi)" "SUKSES"
+            } else {
+                Write-GuiLog "Gagal menyalakan server PHP. Periksa terminal atau port." "ERROR"
+            }
+            return
+        } elseif ($choice -eq [System.Windows.MessageBoxResult]::No) {
+            $dockerApp = "C:\Program Files\Docker\Docker\Docker Desktop.exe"
+            if (Test-Path $dockerApp) {
+                Start-Process $dockerApp
+                Write-GuiLog "Membuka Docker Desktop... Harap tunggu engine siap (1-2 menit), lalu klik tombol ini lagi." "DOCKER"
+            } else {
+                Write-GuiLog "Aplikasi Docker Desktop tidak ditemukan." "ERROR"
+            }
+            return
+        } else {
+            return
+        }
+    }
+
+    # Jika Docker Engine Aktif
+    Write-GuiLog "Menyalakan container Docker (docker compose up -d)..." "PROSES"
+    $txtDockerUpTitle.Text = "[ MEMULAI CONTAINER... ]"
+    [System.Windows.Forms.Application]::DoEvents()
+
     $out = docker compose up -d 2>&1
     Write-GuiLog ($out -join "`r`n") "DOCKER"
-    Update-ServerStatus $true
-    Write-GuiLog "Server aktif di $baseUrl (Lokal & Jaringan Wi-Fi)" "SUKSES"
+
+    # Verifikasi konektivitas riil port 8000 (polling hingga 6 detik)
+    $started = $false
+    for ($i = 0; $i -lt 6; $i++) {
+        Start-Sleep -Seconds 1
+        if (Test-PortFast 8000) {
+            $started = $true
+            break
+        }
+    }
+
+    if ($started) {
+        Update-DockerBadge
+        Update-ServerStatus $true "DOCKER"
+        Write-GuiLog "SUKSES: Container Docker aktif dan merespon di $baseUrl" "SUKSES"
+    } else {
+        Update-ServerStatus $false
+        Write-GuiLog "PERINGATAN: Container belum merespon di port 8000. Cek Docker Desktop." "PERHATIAN"
+    }
 })
 
-# Server: Matikan
-$btnDockerDown.Add_Click({
-    Write-GuiLog "Mematikan server..." "PROSES"
-    if (Get-Command "docker" -ErrorAction SilentlyContinue) {
-        $out = docker compose down 2>&1
-        Write-GuiLog ($out -join "`r`n") "DOCKER"
+# -----------------------------------------------------------------------
+# ENGINE 2: NYALAKAN VIA PHP NATIVE (INSTAN, TANPA DOCKER, HEMAT RAM)
+# -----------------------------------------------------------------------
+$btnPhpServe.Add_Click({
+    if (Test-PortFast 8000) {
+        Write-GuiLog "Server sudah aktif di port 8000!" "INFO"
+        Update-ServerStatus $true
+        return
     }
-    Get-Process -Name "php" -ErrorAction SilentlyContinue | Stop-Process -Force
-    Update-ServerStatus $false
-    Write-GuiLog "Server berhasil dinonaktifkan." "SELESAI"
+
+    $txtPhpServeTitle.Text = "[ MEMULAI... ]"
+    [System.Windows.Forms.Application]::DoEvents()
+
+    Write-GuiLog "Menjalankan PHP Artisan Serve di 0.0.0.0:8000..." "PROSES"
+    Start-Process -FilePath "php" -ArgumentList "artisan serve --host=0.0.0.0 --port=8000" -WorkingDirectory $projectRoot -WindowStyle Hidden
+    
+    # Tunggu dan verifikasi port 8000
+    Start-Sleep -Milliseconds 1400
+    if (Test-PortFast 8000) {
+        Update-ServerStatus $true "PHP ARTISAN"
+        Write-GuiLog "SUKSES: Server PHP Artisan aktif di $baseUrl (Siap Diakses HP & Lokal)" "SUKSES"
+    } else {
+        Update-ServerStatus $false
+        Write-GuiLog "Gagal menyalakan PHP server. Pastikan PHP 8.4 terpasang di sistem." "ERROR"
+    }
+})
+
+# -----------------------------------------------------------------------
+# MATIKAN SERVER (BERSIHKAN CONTAINER DOCKER & PROSES PHP)
+# -----------------------------------------------------------------------
+$btnDockerDown.Add_Click({
+    $txtDockerDownTitle.Text = "[ MEMATIKAN... ]"
+    [System.Windows.Forms.Application]::DoEvents()
+
+    Write-GuiLog "Menghentikan seluruh proses server (Docker & PHP)..." "PROSES"
+
+    # Stop Docker jika ada
+    if (Get-Command "docker" -ErrorAction SilentlyContinue) {
+        $daemonUp = Test-DockerDaemonFast
+        if ($daemonUp) {
+            $out = docker compose down 2>&1
+            Write-GuiLog ($out -join "`r`n") "DOCKER"
+        }
+    }
+
+    # Stop proses PHP Artisan Serve
+    Get-Process -Name "php" -ErrorAction SilentlyContinue | Where-Object {
+        $_.MainWindowTitle -eq ""
+    } | Stop-Process -Force -ErrorAction SilentlyContinue
+
+    Start-Sleep -Milliseconds 800
+
+    if (-not (Test-PortFast 8000)) {
+        Update-ServerStatus $false
+        Write-GuiLog "SUKSES: Server port 8000 berhasil dinonaktifkan." "SELESAI"
+    } else {
+        # Force terminate port jika masih ada yang mengikat
+        $netstat = Get-NetTCPConnection -LocalPort 8000 -State Listen -ErrorAction SilentlyContinue
+        if ($netstat) {
+            Stop-Process -Id $netstat.OwningProcess -Force -ErrorAction SilentlyContinue
+        }
+        Update-ServerStatus $false
+        Write-GuiLog "Server berhasil dihentikan." "SELESAI"
+    }
 })
 
 # Buka Browser Publik
@@ -518,59 +806,51 @@ $btnDeployProd.Add_Click({
         "Apakah Anda yakin ingin merilis ke PRODUCTION (Hosting Live)?`n`nSistem akan menjalankan:`n1. Uji Kelayakan Otomatis (PHPUnit)`n2. Kompilasi Aset Siap Produksi (Vite)`n3. Merge & Push ke branch 'production' untuk hosting live.",
         "Konfirmasi Rilis Produksi",
         [System.Windows.MessageBoxButton]::YesNo,
-        [System.Windows.MessageBoxImage]::Question
+        [System.Windows.MessageBoxImage]::Warning
     )
     if ($confirm -ne [System.Windows.MessageBoxResult]::Yes) {
-        Write-GuiLog "Rilis ke production dibatalkan oleh pengguna." "INFO"
+        Write-GuiLog "Rilis ke production dibatalkan oleh user." "INFO"
         return
     }
 
-    Write-GuiLog "=== MEMULAI PROSES RILIS KE PRODUCTION ===" "PROD DEPLOY"
+    Write-GuiLog "Memulai pipeline rilis PRODUCTION..." "PROD PIPELINE"
 
-    # Step 1: Run tests
-    Write-GuiLog "[Langkah 1/4] Menjalankan uji kelayakan fitur (PHPUnit)..." "PENGUJIAN"
+    # Step 1: Tests
+    Write-GuiLog "Langkah 1/4: Menjalankan automated test suite..." "TEST"
     $testOut = php artisan test --compact 2>&1
-    Write-GuiLog ($testOut -join "`r`n") "PENGUJIAN"
+    Write-GuiLog ($testOut -join "`r`n") "TEST"
     if ($LASTEXITCODE -ne 0) {
-        Write-GuiLog "GAGAL: Ada pengujian yang tidak lolos! Rilis dibatalkan agar hosting tidak error." "ERROR"
-        [System.Windows.MessageBox]::Show("Uji kelayakan (PHPUnit) menemukan error. Rilis dibatalkan.", "Rilis Gagal", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error) | Out-Null
+        Write-GuiLog "GAGAL: Test gagal. Rilis dibatalkan demi keamanan hosting live!" "ERROR"
+        [System.Windows.MessageBox]::Show("Terdapat test yang gagal. Rilis ke production dibatalkan.", "Rilis Dibatalkan", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Error) | Out-Null
         return
     }
 
-    # Step 2: Build assets
-    Write-GuiLog "[Langkah 2/4] Mengompilasi aset frontend produksi (npm run build)..." "BUILD"
+    # Step 2: Build Vite
+    Write-GuiLog "Langkah 2/4: Mengompilasi aset CSS & JS untuk production..." "BUILD"
     $buildOut = npm run build 2>&1
     Write-GuiLog ($buildOut -join "`r`n") "BUILD"
 
-    # Step 3: Commit current dev changes
-    Write-GuiLog "[Langkah 3/4] Menyiapkan commit rilis..." "GIT"
-    git add . 2>&1 | Out-Null
-    $releaseMsg = "prod release: v" + (Get-Date -Format "yyyy.MM.dd-HHmm")
-    git commit -m "$releaseMsg" 2>&1 | Out-Null
-
-    # Step 4: Checkout production, merge development, push production
-    Write-GuiLog "[Langkah 4/4] Menggabungkan ke branch 'production' dan mengunggah ke GitHub..." "PROD DEPLOY"
+    # Step 3: Switch & Merge
+    Write-GuiLog "Langkah 3/4: Merge branch 'development' ke 'production'..." "GIT"
     git checkout production 2>&1 | Out-Null
-    git merge development -m "Merge development into production ($releaseMsg)" 2>&1 | Out-Null
-    $pushProd = git push origin production 2>&1
-    Write-GuiLog ($pushProd -join "`r`n") "PROD DEPLOY"
+    Update-BranchBadge
+    $mergeOut = git merge development 2>&1
+    Write-GuiLog ($mergeOut -join "`r`n") "GIT"
 
-    # Also sync to main for standard repo view
-    git checkout main 2>&1 | Out-Null
-    git merge production -m "Sync production into main ($releaseMsg)" 2>&1 | Out-Null
-    git push origin main 2>&1 | Out-Null
+    # Step 4: Push to Remote
+    Write-GuiLog "Langkah 4/4: Mendorong ke hosting live (origin/production)..." "GIT"
+    $pushOut = git push origin production 2>&1
+    Write-GuiLog ($pushOut -join "`r`n") "GIT"
 
-    # Return to development
+    # Kembali ke development untuk lanjut ngoding
     git checkout development 2>&1 | Out-Null
     Update-BranchBadge
 
-    Write-GuiLog "=== RILIS PRODUCTION SUKSES! ===" "SUKSES"
-    Write-GuiLog "Website hosting live sekarang dapat menarik pembaruan dari branch 'production'." "INFO"
-    Write-GuiLog "Active branch Anda telah dikembalikan ke 'development' untuk lanjut bekerja aman." "INFO"
-    [System.Windows.MessageBox]::Show("Rilis Production Berhasil!`n`nBranch 'production' telah terupdate di GitHub.`nAnda telah dikembalikan ke branch 'development' untuk coding berikutnya.", "Sukses Rilis Production", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Information) | Out-Null
+    Write-GuiLog "SELESAI: Versi terbaru berhasil dirilis ke Hosting Live PRODUCTION!" "SUKSES"
+    [System.Windows.MessageBox]::Show("Rilis Production Berhasil!`nWebsite live di hosting telah diperbarui dengan versi terbaru.", "Rilis Berhasil", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Information) | Out-Null
 })
 
-# Pindah ke Branch Development
+# Pindah ke branch development
 $btnSwitchDev.Add_Click({
     Write-GuiLog "Berpindah ke branch 'development'..." "GIT"
     $out = git checkout development 2>&1
@@ -578,7 +858,7 @@ $btnSwitchDev.Add_Click({
     Update-BranchBadge
 })
 
-# Pindah ke Branch Production
+# Pindah ke branch production
 $btnSwitchProd.Add_Click({
     Write-GuiLog "Berpindah ke branch 'production'..." "GIT"
     $out = git checkout production 2>&1
@@ -586,35 +866,26 @@ $btnSwitchProd.Add_Click({
     Update-BranchBadge
 })
 
-# Refresh Database
+# Migrate & Seed
 $btnMigrateSeed.Add_Click({
-    Write-GuiLog "Menjalankan migrasi database & seed..." "DATABASE"
-    if (Get-Command "docker" -ErrorAction SilentlyContinue -and (docker compose ps -q app 2>$null)) {
-        $out = docker compose exec -T app php artisan migrate:fresh --seed --no-interaction 2>&1
-    } else {
-        $out = php artisan migrate:fresh --seed --no-interaction 2>&1
-    }
+    Write-GuiLog "Menjalankan migrasi database & seeder..." "DATABASE"
+    $out = php artisan migrate:fresh --seed --force 2>&1
     Write-GuiLog ($out -join "`r`n") "DATABASE"
-    Write-GuiLog "Database berhasil diperbarui dengan data paket & kamera!" "SUKSES"
+    Write-GuiLog "Database berhasil di-refresh dengan data dummy terbaru." "SUKSES"
 })
 
 # Build Vite
 $btnBuildProd.Add_Click({
-    Write-GuiLog "Menjalankan build Vite..." "BUILD"
+    Write-GuiLog "Mengompilasi aset frontend dengan Vite..." "BUILD"
     $out = npm run build 2>&1
     Write-GuiLog ($out -join "`r`n") "BUILD"
-    Write-GuiLog "Kompilasi selesai." "SUKSES"
 })
 
 # Clear Cache
 $btnClearCache.Add_Click({
-    Write-GuiLog "Membersihkan cache aplikasi..." "CACHE"
-    if (Get-Command "docker" -ErrorAction SilentlyContinue -and (docker compose ps -q app 2>$null)) {
-        $out = docker compose exec -T app php artisan optimize:clear 2>&1
-    } else {
-        $out = php artisan optimize:clear 2>&1
-    }
-    Write-GuiLog ($out -join "`r`n") "CACHE"
+    Write-GuiLog "Membersihkan cache Laravel (Config, Route, View)..." "CACHE"
+    $out1 = php artisan optimize:clear 2>&1
+    Write-GuiLog ($out1 -join "`r`n") "CACHE"
 })
 
 # Run Tests
@@ -642,10 +913,6 @@ $btnClearLog.Add_Click({
     $logBox.Clear()
     Write-GuiLog "Catatan log dibersihkan." "INFO"
 })
-
-# Cek Port Awal
-$portActive = Test-NetConnection -ComputerName 127.0.0.1 -Port 8000 -InformationLevel Quiet -WarningAction SilentlyContinue
-Update-ServerStatus $portActive
 
 # Tampilkan GUI
 $window.ShowDialog() | Out-Null

@@ -1,34 +1,45 @@
 /**
  * Dezzly Creative - The Weeknd Studio Vibes & Interactive Audio Engine
  * Features:
- * 1. Dual Audio Engine: Plays /audio/the-weeknd.mp3 if available, or procedural 80s Synthwave synthesizer (Blinding Lights style)
- * 2. Visualizer audio bars animation
- * 3. Interactive Camera Shutter click sound
+ * 1. Dedicated Dual Audio Engine: High-fidelity Studio Audio file with Procedural Synthesizer fallback
+ * 2. Visualizer audio bars animation synced to playback state
+ * 3. Interactive Camera Shutter click sound for buttons and cards
  */
 
 class DezzlyAudioEngine {
     constructor() {
         this.isPlaying = false;
+        this.volume = 0.8;
+        this.audioElement = null;
         this.audioCtx = null;
         this.synthTimer = null;
         this.step = 0;
-        this.volume = 0.35;
-        this.audioElement = null;
-        this.hasExternalAudio = false;
 
-        this.initExternalAudio();
+        // Auto-detect HTML5 audio element
+        if (typeof document !== 'undefined') {
+            document.addEventListener('DOMContentLoaded', () => {
+                this.bindAudioElement();
+            });
+        }
     }
 
-    initExternalAudio() {
-        this.audioElement = new Audio('/audio/the-weeknd.mp3');
-        this.audioElement.loop = true;
-        this.audioElement.volume = this.volume;
+    bindAudioElement() {
+        let el = document.getElementById('dezzly-bg-audio');
+        if (!el) {
+            el = new Audio('/audio/the-weeknd.wav');
+            el.loop = true;
+        }
+        el.volume = this.volume;
+        this.audioElement = el;
 
-        this.audioElement.addEventListener('canplaythrough', () => {
-            this.hasExternalAudio = true;
+        // Sync state if audio ends or pauses externally
+        el.addEventListener('play', () => {
+            this.isPlaying = true;
+            this.updateWidgetState(true);
         });
-        this.audioElement.addEventListener('error', () => {
-            this.hasExternalAudio = false;
+        el.addEventListener('pause', () => {
+            this.isPlaying = false;
+            this.updateWidgetState(false);
         });
     }
 
@@ -46,7 +57,7 @@ class DezzlyAudioEngine {
     }
 
     /**
-     * Play Camera Shutter Click sound for micro-interactions
+     * Play subtle camera shutter sound on click micro-interactions
      */
     playShutterSound() {
         try {
@@ -58,10 +69,10 @@ class DezzlyAudioEngine {
             const gain = ctx.createGain();
 
             osc.type = 'triangle';
-            osc.frequency.setValueAtTime(800, now);
-            osc.frequency.exponentialRampToValueAtTime(120, now + 0.05);
+            osc.frequency.setValueAtTime(850, now);
+            osc.frequency.exponentialRampToValueAtTime(140, now + 0.05);
 
-            gain.gain.setValueAtTime(this.volume * 0.4, now);
+            gain.gain.setValueAtTime(this.volume * 0.45, now);
             gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
 
             osc.connect(gain);
@@ -70,8 +81,8 @@ class DezzlyAudioEngine {
             osc.start(now);
             osc.stop(now + 0.07);
 
-            // Click noise burst
-            const bufferSize = ctx.sampleRate * 0.03;
+            // Shutter noise burst
+            const bufferSize = ctx.sampleRate * 0.025;
             const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
             const output = buffer.getChannelData(0);
             for (let i = 0; i < bufferSize; i++) {
@@ -82,18 +93,18 @@ class DezzlyAudioEngine {
 
             const noiseFilter = ctx.createBiquadFilter();
             noiseFilter.type = 'bandpass';
-            noiseFilter.frequency.value = 1200;
+            noiseFilter.frequency.value = 1400;
 
             const noiseGain = ctx.createGain();
-            noiseGain.gain.setValueAtTime(this.volume * 0.3, now + 0.02);
+            noiseGain.gain.setValueAtTime(this.volume * 0.35, now + 0.015);
             noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
 
             whiteNoise.connect(noiseFilter);
             noiseFilter.connect(noiseGain);
             noiseGain.connect(ctx.destination);
 
-            whiteNoise.start(now + 0.02);
-            whiteNoise.stop(now + 0.06);
+            whiteNoise.start(now + 0.015);
+            whiteNoise.stop(now + 0.055);
         } catch (e) {
             // Audio context not ready
         }
@@ -106,11 +117,14 @@ class DezzlyAudioEngine {
         const ctx = this.getAudioContext();
         if (!ctx) return;
 
-        // Tempo: 171 BPM, sixteenth note step ~ 87.7ms
-        const stepTimeMs = 88;
+        // Ensure audio context is running
+        if (ctx.state === 'suspended') {
+            ctx.resume();
+        }
 
-        // F minor pentatonic / synth bass notes frequencies (Hz)
-        // Fm: F (174.6), Ab (207.6), C (261.6), Eb (311.1), F2 (349.2), G (392)
+        this.stopProceduralSynth();
+
+        const stepTimeMs = 88; // ~171 BPM sixteenth note
         const leadNotes = [
             349.23, 0, 349.23, 392.00, 349.23, 0, 311.13, 261.63,
             261.63, 0, 261.63, 311.13, 261.63, 0, 207.65, 174.61,
@@ -119,10 +133,10 @@ class DezzlyAudioEngine {
         ];
 
         const bassNotes = [
-            87.31, 87.31, 87.31, 87.31, 87.31, 87.31, 87.31, 87.31, // F1
-            65.41, 65.41, 65.41, 65.41, 65.41, 65.41, 65.41, 65.41, // C1
-            77.78, 77.78, 77.78, 77.78, 77.78, 77.78, 77.78, 77.78, // Eb1
-            58.27, 58.27, 58.27, 58.27, 58.27, 58.27, 58.27, 58.27  // Bb0
+            174.61, 174.61, 174.61, 174.61, 174.61, 174.61, 174.61, 174.61, // F2
+            130.81, 130.81, 130.81, 130.81, 130.81, 130.81, 130.81, 130.81, // C2
+            155.56, 155.56, 155.56, 155.56, 155.56, 155.56, 155.56, 155.56, // Eb2
+            116.54, 116.54, 116.54, 116.54, 116.54, 116.54, 116.54, 116.54  // Bb1
         ];
 
         this.step = 0;
@@ -133,7 +147,7 @@ class DezzlyAudioEngine {
             const now = ctx.currentTime;
             const currentStep = this.step % 32;
 
-            // 1. Synth Bass Note (Pulsing 80s analog bass)
+            // 1. Synth Bass Note
             const bassFreq = bassNotes[currentStep];
             if (bassFreq > 0) {
                 const bassOsc = ctx.createOscillator();
@@ -144,10 +158,10 @@ class DezzlyAudioEngine {
                 bassOsc.frequency.setValueAtTime(bassFreq, now);
 
                 bassFilter.type = 'lowpass';
-                bassFilter.frequency.setValueAtTime(450, now);
-                bassFilter.frequency.exponentialRampToValueAtTime(180, now + 0.08);
+                bassFilter.frequency.setValueAtTime(800, now);
+                bassFilter.frequency.exponentialRampToValueAtTime(300, now + 0.08);
 
-                bassGain.gain.setValueAtTime(this.volume * 0.45, now);
+                bassGain.gain.setValueAtTime(this.volume * 0.75, now);
                 bassGain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
 
                 bassOsc.connect(bassFilter);
@@ -169,10 +183,10 @@ class DezzlyAudioEngine {
                 leadOsc.frequency.setValueAtTime(leadFreq, now);
 
                 leadFilter.type = 'lowpass';
-                leadFilter.frequency.setValueAtTime(1800, now);
-                leadFilter.frequency.exponentialRampToValueAtTime(600, now + 0.12);
+                leadFilter.frequency.setValueAtTime(2400, now);
+                leadFilter.frequency.exponentialRampToValueAtTime(900, now + 0.12);
 
-                leadGain.gain.setValueAtTime(this.volume * 0.28, now);
+                leadGain.gain.setValueAtTime(this.volume * 0.65, now);
                 leadGain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
 
                 leadOsc.connect(leadFilter);
@@ -183,27 +197,25 @@ class DezzlyAudioEngine {
                 leadOsc.stop(now + 0.15);
             }
 
-            // 3. 80s Drum Beat (Kick on 0, 8, 16, 24 | Snare on 4, 12, 20, 28)
+            // 3. 80s Drum Beat
             if (currentStep % 8 === 0) {
-                // Kick drum
                 const kickOsc = ctx.createOscillator();
                 const kickGain = ctx.createGain();
-                kickOsc.frequency.setValueAtTime(140, now);
-                kickOsc.frequency.exponentialRampToValueAtTime(45, now + 0.07);
-                kickGain.gain.setValueAtTime(this.volume * 0.5, now);
+                kickOsc.frequency.setValueAtTime(160, now);
+                kickOsc.frequency.exponentialRampToValueAtTime(50, now + 0.07);
+                kickGain.gain.setValueAtTime(this.volume * 0.8, now);
                 kickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
                 kickOsc.connect(kickGain);
                 kickGain.connect(ctx.destination);
                 kickOsc.start(now);
                 kickOsc.stop(now + 0.09);
             } else if (currentStep % 8 === 4) {
-                // Snare drum (white noise + pop)
                 const snareOsc = ctx.createOscillator();
                 const snareGain = ctx.createGain();
                 snareOsc.type = 'triangle';
-                snareOsc.frequency.setValueAtTime(220, now);
-                snareOsc.frequency.exponentialRampToValueAtTime(80, now + 0.05);
-                snareGain.gain.setValueAtTime(this.volume * 0.3, now);
+                snareOsc.frequency.setValueAtTime(240, now);
+                snareOsc.frequency.exponentialRampToValueAtTime(90, now + 0.05);
+                snareGain.gain.setValueAtTime(this.volume * 0.6, now);
                 snareGain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
                 snareOsc.connect(snareGain);
                 snareGain.connect(ctx.destination);
@@ -232,17 +244,27 @@ class DezzlyAudioEngine {
     }
 
     play() {
-        this.getAudioContext();
         this.isPlaying = true;
+        this.getAudioContext();
 
-        if (this.hasExternalAudio && this.audioElement) {
-            this.audioElement.play().catch(() => {
-                // Fallback to procedural synth
-                this.startProceduralSynth();
-            });
+        if (!this.audioElement) {
+            this.bindAudioElement();
+        }
+
+        if (this.audioElement) {
+            this.audioElement.volume = this.volume;
+            const playPromise = this.audioElement.play();
+            if (playPromise !== undefined) {
+                playPromise.catch((err) => {
+                    console.warn('[DezzlyAudio] Audio file play blocked or unavailable, using Web Audio Synth:', err);
+                    this.startProceduralSynth();
+                });
+            }
         } else {
             this.startProceduralSynth();
         }
+
+        this.updateWidgetState(true);
     }
 
     pause() {
@@ -251,6 +273,7 @@ class DezzlyAudioEngine {
             this.audioElement.pause();
         }
         this.stopProceduralSynth();
+        this.updateWidgetState(false);
     }
 
     setVolume(val) {
@@ -259,20 +282,34 @@ class DezzlyAudioEngine {
             this.audioElement.volume = this.volume;
         }
     }
+
+    updateWidgetState(playing) {
+        const widget = document.getElementById('music-player-widget');
+        if (widget && window.Alpine) {
+            try {
+                const data = window.Alpine.$data(widget);
+                if (data && data.isPlaying !== playing) {
+                    data.isPlaying = playing;
+                }
+            } catch (e) {
+                // Alpine data not ready
+            }
+        }
+    }
 }
 
-// Attach globally
+// Global instance
 window.dezzlyAudio = new DezzlyAudioEngine();
 
-// Hook camera shutter clicks to all camera buttons
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('[data-camera-shutter], button, .card-clean').forEach((el) => {
-        el.addEventListener('click', () => {
-            if (window.dezzlyAudio && !el.closest('#music-player-widget')) {
-                // subtle shutter feedback
-                window.dezzlyAudio.playShutterSound();
-            }
+// Hook camera shutter clicks to buttons
+if (typeof document !== 'undefined') {
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('button:not(#music-player-widget button), a[href^="#rental"]').forEach((el) => {
+            el.addEventListener('click', () => {
+                if (window.dezzlyAudio) {
+                    window.dezzlyAudio.playShutterSound();
+                }
+            });
         });
     });
-});
-
+}

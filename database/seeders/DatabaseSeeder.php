@@ -26,6 +26,8 @@ class DatabaseSeeder extends Seeder
             RentalItemSeeder::class,
             PackageSeeder::class,
             PortfolioItemSeeder::class,
+            SiteSettingSeeder::class,
+            FaqItemSeeder::class,
         ]);
     }
 }
